@@ -1,11 +1,12 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import MainLayout from '@/components/layout/MainLayout'
 import { BookOpenIcon, BrushIcon, HomeIcon, ImageIcon, ScaleIcon, TruckIcon, ArrowLeftIcon, UsersIcon } from 'lucide-react'
 
-export default function KnowledgeBase() {
+// Component that uses useSearchParams must be wrapped in Suspense
+function KnowledgeBaseContent() {
   const searchParams = useSearchParams()
   const articleParam = searchParams.get('article')
 
@@ -16,6 +17,10 @@ export default function KnowledgeBase() {
       setActiveArticle(articleParam)
     }
   }, [articleParam])
+
+  const handleBackToList = () => {
+    setActiveArticle(null)
+  }
 
   // Knowledge base articles
   const articles = {
@@ -336,12 +341,8 @@ export default function KnowledgeBase() {
     }
   }
 
-  const handleBackToList = () => {
-    setActiveArticle(null)
-  }
-
   return (
-    <MainLayout>
+    <>
       <h2 className="text-3xl font-semibold text-gray-800 mb-6 flex items-center">
         <BookOpenIcon className="mr-2 text-teal-500" /> Knowledge Base
       </h2>
@@ -556,6 +557,26 @@ export default function KnowledgeBase() {
           </div>
         </div>
       )}
+    </>
+  )
+}
+
+// Loading fallback component
+function KnowledgeBaseLoading() {
+  return (
+    <div className="flex justify-center items-center h-64">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal-500"></div>
+    </div>
+  )
+}
+
+// Main component that wraps the content in Suspense
+export default function KnowledgeBase() {
+  return (
+    <MainLayout>
+      <Suspense fallback={<KnowledgeBaseLoading />}>
+        <KnowledgeBaseContent />
+      </Suspense>
     </MainLayout>
   )
 }
