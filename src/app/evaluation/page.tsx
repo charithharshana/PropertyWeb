@@ -33,7 +33,7 @@ export default function PropertyEvaluation() {
       // Handle features array
       const featureName = name.replace('feature-', '')
       setFormData(prev => {
-        const features = checked 
+        const features = checked
           ? [...prev.features, featureName]
           : prev.features.filter(f => f !== featureName)
         return { ...prev, features }
@@ -52,19 +52,19 @@ export default function PropertyEvaluation() {
     // Simple estimation logic (would be more complex in a real app)
     const size = parseFloat(formData.size) || 75
     const baseValue = size * 3000
-    
+
     // Adjust based on condition
     let multiplier = 1
     if (formData.condition === 'Excellent') multiplier = 1.2
     else if (formData.condition === 'Good') multiplier = 1.05
     else if (formData.condition === 'Fair') multiplier = 0.85
     else if (formData.condition === 'Poor') multiplier = 0.7
-    
+
     // Additional adjustments
     if (formData.hasBalcony) multiplier += 0.05
     if (formData.features.includes('Parking')) multiplier += 0.03
     if (formData.features.includes('Sauna')) multiplier += 0.04
-    
+
     const estimate = Math.round((baseValue * multiplier) / 1000) * 1000
     setEstimatedValue(estimate)
     navigateStep(1) // Move to results step
@@ -74,7 +74,7 @@ export default function PropertyEvaluation() {
     <MainLayout>
       <div className="max-w-3xl mx-auto">
         <h2 className="text-3xl font-semibold text-gray-800 mb-6">Property Evaluation</h2>
-        
+
         {/* Progress indicator */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-2">
@@ -82,13 +82,13 @@ export default function PropertyEvaluation() {
             <span className="text-sm font-medium text-sky-600">{Math.round((currentStep / totalSteps) * 100)}% Complete</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
-            <div 
-              className="bg-sky-500 h-2 rounded-full" 
+            <div
+              className="bg-sky-500 h-2 rounded-full"
               style={{ width: `${(currentStep / totalSteps) * 100}%` }}
             ></div>
           </div>
         </div>
-        
+
         {/* Step 1: Property Basics */}
         {currentStep === 1 && (
           <div className="bg-white p-8 rounded-lg shadow-md">
@@ -96,8 +96,8 @@ export default function PropertyEvaluation() {
             <div className="space-y-4">
               <div>
                 <label htmlFor="propertyType" className="block text-sm font-medium text-gray-700 mb-1">Property Type</label>
-                <select 
-                  id="propertyType" 
+                <select
+                  id="propertyType"
                   name="propertyType"
                   value={formData.propertyType}
                   onChange={handleInputChange}
@@ -111,9 +111,9 @@ export default function PropertyEvaluation() {
               </div>
               <div>
                 <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">Address</label>
-                <input 
-                  type="text" 
-                  id="address" 
+                <input
+                  type="text"
+                  id="address"
                   name="address"
                   value={formData.address}
                   onChange={handleInputChange}
@@ -123,9 +123,9 @@ export default function PropertyEvaluation() {
               </div>
               <div>
                 <label htmlFor="size" className="block text-sm font-medium text-gray-700 mb-1">Size (m²)</label>
-                <input 
-                  type="number" 
-                  id="size" 
+                <input
+                  type="number"
+                  id="size"
                   name="size"
                   value={formData.size}
                   onChange={handleInputChange}
@@ -136,7 +136,7 @@ export default function PropertyEvaluation() {
             </div>
           </div>
         )}
-        
+
         {/* Step 2: Rooms & Details */}
         {currentStep === 2 && (
           <div className="bg-white p-8 rounded-lg shadow-md">
@@ -145,9 +145,9 @@ export default function PropertyEvaluation() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="bedrooms" className="block text-sm font-medium text-gray-700 mb-1">Bedrooms</label>
-                  <input 
-                    type="number" 
-                    id="bedrooms" 
+                  <input
+                    type="number"
+                    id="bedrooms"
                     name="bedrooms"
                     value={formData.bedrooms}
                     onChange={handleInputChange}
@@ -157,9 +157,9 @@ export default function PropertyEvaluation() {
                 </div>
                 <div>
                   <label htmlFor="bathrooms" className="block text-sm font-medium text-gray-700 mb-1">Bathrooms</label>
-                  <input 
-                    type="number" 
-                    id="bathrooms" 
+                  <input
+                    type="number"
+                    id="bathrooms"
                     name="bathrooms"
                     value={formData.bathrooms}
                     onChange={handleInputChange}
@@ -170,9 +170,9 @@ export default function PropertyEvaluation() {
               </div>
               <div>
                 <label htmlFor="yearBuilt" className="block text-sm font-medium text-gray-700 mb-1">Year Built</label>
-                <input 
-                  type="number" 
-                  id="yearBuilt" 
+                <input
+                  type="number"
+                  id="yearBuilt"
                   name="yearBuilt"
                   value={formData.yearBuilt}
                   onChange={handleInputChange}
@@ -182,8 +182,8 @@ export default function PropertyEvaluation() {
               </div>
               <div>
                 <label htmlFor="condition" className="block text-sm font-medium text-gray-700 mb-1">Condition</label>
-                <select 
-                  id="condition" 
+                <select
+                  id="condition"
                   name="condition"
                   value={formData.condition}
                   onChange={handleInputChange}
@@ -199,16 +199,16 @@ export default function PropertyEvaluation() {
             </div>
           </div>
         )}
-        
+
         {/* Step 3: Features */}
         {currentStep === 3 && (
           <div className="bg-white p-8 rounded-lg shadow-md">
             <h3 className="text-xl font-semibold text-gray-700 mb-4">Features & Amenities</h3>
             <div className="space-y-4">
               <div className="flex items-center">
-                <input 
-                  type="checkbox" 
-                  id="hasBalcony" 
+                <input
+                  type="checkbox"
+                  id="hasBalcony"
                   name="hasBalcony"
                   checked={formData.hasBalcony}
                   onChange={handleCheckboxChange}
@@ -221,9 +221,9 @@ export default function PropertyEvaluation() {
                 <div className="grid grid-cols-2 gap-2">
                   {['Parking', 'Sauna', 'Storage', 'Elevator', 'Garden', 'Security System'].map(feature => (
                     <div key={feature} className="flex items-center">
-                      <input 
-                        type="checkbox" 
-                        id={`feature-${feature}`} 
+                      <input
+                        type="checkbox"
+                        id={`feature-${feature}`}
                         name={`feature-${feature}`}
                         checked={formData.features.includes(feature)}
                         onChange={handleCheckboxChange}
@@ -237,13 +237,13 @@ export default function PropertyEvaluation() {
             </div>
           </div>
         )}
-        
+
         {/* Step 4: Confirmation */}
         {currentStep === 4 && (
           <div className="bg-white p-8 rounded-lg shadow-md">
             <h3 className="text-xl font-semibold text-gray-700 mb-4">Confirm Details</h3>
             <p className="text-sm text-gray-600 mb-4">Please review the information below before getting your estimate.</p>
-            
+
             <div className="space-y-4 text-sm">
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -277,22 +277,22 @@ export default function PropertyEvaluation() {
                 <div>
                   <p className="font-medium text-gray-700">Features:</p>
                   <p className="text-gray-600">
-                    {formData.features.length > 0 
-                      ? formData.features.join(', ') 
+                    {formData.features.length > 0
+                      ? formData.features.join(', ')
                       : 'None selected'}
                   </p>
                 </div>
               </div>
-              
+
               <div className="pt-4">
                 <p className="text-gray-600 italic">
-                  Click "Get Estimate" to calculate the approximate value of your property based on the information provided.
+                  Click &quot;Get Estimate&quot; to calculate the approximate value of your property based on the information provided.
                 </p>
               </div>
             </div>
           </div>
         )}
-        
+
         {/* Step 5: Results */}
         {currentStep === 5 && (
           <div className="bg-white p-8 rounded-lg shadow-md text-center">
@@ -300,7 +300,7 @@ export default function PropertyEvaluation() {
               <CheckCircleIcon className="h-8 w-8 text-green-500" />
             </div>
             <h3 className="text-xl font-semibold text-gray-700 mb-2">Evaluation Complete</h3>
-            
+
             <div className="my-6 p-6 bg-sky-50 rounded-lg">
               <p className="text-sm text-gray-600 mb-2">Estimated Property Value</p>
               <p className="text-4xl font-bold text-sky-700">
@@ -308,7 +308,7 @@ export default function PropertyEvaluation() {
               </p>
               <p className="text-xs text-gray-500 mt-2">*Based on provided information and market averages</p>
             </div>
-            
+
             <div className="text-sm text-gray-600 mt-4 text-left">
               <p className="mb-2">This estimate is based on:</p>
               <ul className="list-disc list-inside space-y-1 text-gray-600">
@@ -319,7 +319,7 @@ export default function PropertyEvaluation() {
               </ul>
               <p className="mt-4">For a more accurate valuation, we recommend consulting with a professional real estate agent or appraiser.</p>
             </div>
-            
+
             <div className="mt-8">
               <button
                 onClick={() => window.location.href = '/dashboard'}
@@ -330,7 +330,7 @@ export default function PropertyEvaluation() {
             </div>
           </div>
         )}
-        
+
         {/* Navigation buttons */}
         <div className="mt-6 flex justify-between">
           {currentStep > 1 && (
@@ -341,7 +341,7 @@ export default function PropertyEvaluation() {
               <ArrowLeftIcon className="mr-2 h-4 w-4" /> Previous
             </button>
           )}
-          
+
           {currentStep < 4 && (
             <button
               onClick={() => navigateStep(1)}
@@ -350,7 +350,7 @@ export default function PropertyEvaluation() {
               Next <ArrowRightIcon className="ml-2 h-4 w-4" />
             </button>
           )}
-          
+
           {currentStep === 4 && (
             <button
               onClick={calculateEstimate}

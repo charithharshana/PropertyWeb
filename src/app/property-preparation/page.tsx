@@ -11,7 +11,7 @@ export default function PropertyPreparation() {
   const [generatedText, setGeneratedText] = useState('')
   const [editedText, setEditedText] = useState('')
   const [isGenerating, setIsGenerating] = useState(false)
-  
+
   // Staging checklist state
   const [checklist, setChecklist] = useState({
     'clean-surfaces': false,
@@ -23,17 +23,17 @@ export default function PropertyPreparation() {
     'furniture-arrangement': false,
     'curb-appeal': false
   })
-  
+
   const handleChecklistChange = (id: string) => {
     setChecklist(prev => ({
       ...prev,
       [id]: !prev[id as keyof typeof prev]
     }))
   }
-  
+
   const handleGenerateText = async () => {
     if (!adHighlights.trim()) return
-    
+
     setIsGenerating(true)
     try {
       // Call the OpenAI integration
@@ -46,20 +46,20 @@ export default function PropertyPreparation() {
       setIsGenerating(false)
     }
   }
-  
+
   const checklistProgress = Object.values(checklist).filter(Boolean).length / Object.values(checklist).length * 100
-  
+
   return (
     <MainLayout>
       <h2 className="text-3xl font-semibold text-gray-800 mb-6">Property Preparation</h2>
-      
+
       {/* Tabs */}
       <div className="flex border-b border-gray-200 mb-6">
         <button
           onClick={() => setActiveTab('ad-text')}
           className={`py-3 px-6 font-medium text-sm focus:outline-none ${
-            activeTab === 'ad-text' 
-              ? 'text-sky-600 border-b-2 border-sky-500' 
+            activeTab === 'ad-text'
+              ? 'text-sky-600 border-b-2 border-sky-500'
               : 'text-gray-500 hover:text-gray-700'
           }`}
         >
@@ -68,8 +68,8 @@ export default function PropertyPreparation() {
         <button
           onClick={() => setActiveTab('photos')}
           className={`py-3 px-6 font-medium text-sm focus:outline-none ${
-            activeTab === 'photos' 
-              ? 'text-sky-600 border-b-2 border-sky-500' 
+            activeTab === 'photos'
+              ? 'text-sky-600 border-b-2 border-sky-500'
               : 'text-gray-500 hover:text-gray-700'
           }`}
         >
@@ -78,15 +78,15 @@ export default function PropertyPreparation() {
         <button
           onClick={() => setActiveTab('staging')}
           className={`py-3 px-6 font-medium text-sm focus:outline-none ${
-            activeTab === 'staging' 
-              ? 'text-sky-600 border-b-2 border-sky-500' 
+            activeTab === 'staging'
+              ? 'text-sky-600 border-b-2 border-sky-500'
               : 'text-gray-500 hover:text-gray-700'
           }`}
         >
           <BrushIcon className="inline-block mr-2 h-4 w-4" /> Staging Checklist
         </button>
       </div>
-      
+
       {/* Ad Text Tab */}
       {activeTab === 'ad-text' && (
         <div className="bg-white p-8 rounded-lg shadow-md">
@@ -96,7 +96,7 @@ export default function PropertyPreparation() {
           <p className="text-sm text-gray-600 mb-4">
             Provide some key highlights, and our AI will help craft a compelling description. You can then review and edit.
           </p>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label htmlFor="ad-highlights" className="block text-sm font-medium text-gray-700 mb-1">
@@ -127,7 +127,7 @@ export default function PropertyPreparation() {
                 )}
               </button>
             </div>
-            
+
             <div>
               <label htmlFor="ad-generated-text" className="block text-sm font-medium text-gray-700 mb-1">
                 Generated Description
@@ -165,7 +165,7 @@ export default function PropertyPreparation() {
               </div>
             </div>
           </div>
-          
+
           <div className="mt-6 p-4 bg-sky-50 rounded-md text-sm text-gray-600">
             <p className="font-medium text-sky-700 mb-2">Tips for effective property descriptions:</p>
             <ul className="list-disc list-inside space-y-1">
@@ -178,7 +178,7 @@ export default function PropertyPreparation() {
           </div>
         </div>
       )}
-      
+
       {/* Photos Tab */}
       {activeTab === 'photos' && (
         <div className="bg-white p-8 rounded-lg shadow-md">
@@ -188,7 +188,7 @@ export default function PropertyPreparation() {
           <p className="text-sm text-gray-600 mb-4">
             Upload high-quality photos of your property. Good photos significantly increase buyer interest.
           </p>
-          
+
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
             <ImageIcon className="mx-auto h-12 w-12 text-gray-400" />
             <p className="mt-2 text-sm text-gray-600">Drag and drop photos here, or click to select files</p>
@@ -197,7 +197,7 @@ export default function PropertyPreparation() {
             </button>
             <p className="mt-2 text-xs text-gray-500">Supported formats: JPG, PNG. Max size: 10MB per image.</p>
           </div>
-          
+
           <div className="mt-6 p-4 bg-sky-50 rounded-md text-sm text-gray-600">
             <p className="font-medium text-sky-700 mb-2">Photo tips:</p>
             <ul className="list-disc list-inside space-y-1">
@@ -210,7 +210,7 @@ export default function PropertyPreparation() {
           </div>
         </div>
       )}
-      
+
       {/* Staging Checklist Tab */}
       {activeTab === 'staging' && (
         <div className="bg-white p-8 rounded-lg shadow-md">
@@ -220,20 +220,20 @@ export default function PropertyPreparation() {
           <p className="text-sm text-gray-600 mb-4">
             Use this checklist to prepare your property for viewings and photos.
           </p>
-          
+
           <div className="mb-4">
             <div className="flex items-center justify-between mb-1">
               <span className="text-sm text-gray-600">Staging Progress</span>
               <span className="text-sm font-medium text-sky-600">{Math.round(checklistProgress)}% Complete</span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2">
-              <div 
-                className="bg-sky-500 h-2 rounded-full" 
+              <div
+                className="bg-sky-500 h-2 rounded-full"
                 style={{ width: `${checklistProgress}%` }}
               ></div>
             </div>
           </div>
-          
+
           <div className="space-y-3">
             {[
               { id: 'clean-surfaces', label: 'Clean all surfaces, floors, and windows' },
@@ -246,9 +246,9 @@ export default function PropertyPreparation() {
               { id: 'curb-appeal', label: 'Enhance curb appeal (tidy garden, clean entrance)' }
             ].map(item => (
               <div key={item.id} className="flex items-center">
-                <input 
-                  type="checkbox" 
-                  id={item.id} 
+                <input
+                  type="checkbox"
+                  id={item.id}
                   checked={checklist[item.id as keyof typeof checklist]}
                   onChange={() => handleChecklistChange(item.id)}
                   className="h-5 w-5 text-sky-600 focus:ring-sky-500 border-gray-300 rounded"
@@ -257,12 +257,12 @@ export default function PropertyPreparation() {
               </div>
             ))}
           </div>
-          
+
           <div className="mt-6 p-4 bg-sky-50 rounded-md text-sm text-gray-600">
             <p className="font-medium text-sky-700 mb-2">Why staging matters:</p>
             <p>
-              Well-staged properties typically sell faster and for higher prices. Staging helps buyers 
-              visualize themselves living in the space and highlights your property's best features.
+              Well-staged properties typically sell faster and for higher prices. Staging helps buyers
+              visualize themselves living in the space and highlights your property&apos;s best features.
             </p>
           </div>
         </div>

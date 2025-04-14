@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import MainLayout from '@/components/layout/MainLayout'
 import { ImageIcon, SendIcon, CheckCircleIcon, AlertCircleIcon, Loader2Icon } from 'lucide-react'
 
@@ -11,7 +12,7 @@ export default function Listing() {
     kv: 'pending',
     olx: 'pending'
   })
-  
+
   // Mock property data (would come from database in real app)
   const property = {
     address: '123 Main Street, Tallinn',
@@ -28,10 +29,10 @@ export default function Listing() {
       { id: 'photo4', url: 'https://placehold.co/600x400/e6f7ff/0369a1?text=Bathroom', caption: 'Bathroom' },
     ]
   }
-  
+
   const handlePublish = () => {
     setIsPublishing(true)
-    
+
     // Simulate publishing process
     setTimeout(() => {
       setPublishStatus({
@@ -42,27 +43,27 @@ export default function Listing() {
       setIsPublishing(false)
     }, 3000)
   }
-  
+
   const getStatusIcon = (status: string) => {
     if (status === 'success') return <CheckCircleIcon className="h-5 w-5 text-green-500" />
     if (status === 'error') return <AlertCircleIcon className="h-5 w-5 text-red-500" />
     if (status === 'pending') return <div className="h-5 w-5 rounded-full border-2 border-gray-300"></div>
     return null
   }
-  
+
   const allPublished = Object.values(publishStatus).every(status => status === 'success')
-  
+
   return (
     <MainLayout>
       <h2 className="text-3xl font-semibold text-gray-800 mb-6">Listing & Publish</h2>
-      
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left column - Property details */}
         <div className="lg:col-span-2 space-y-6">
           {/* Property summary */}
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h3 className="text-xl font-semibold text-gray-700 mb-4">Property Summary</h3>
-            
+
             <div className="grid grid-cols-2 gap-4 mb-4">
               <div>
                 <p className="text-sm font-medium text-gray-500">Address</p>
@@ -85,13 +86,13 @@ export default function Listing() {
                 <p className="text-gray-800 font-semibold">€ {property.price.toLocaleString('de-DE')}</p>
               </div>
             </div>
-            
+
             <div>
               <p className="text-sm font-medium text-gray-500 mb-1">Description</p>
               <p className="text-gray-800 text-sm">{property.description}</p>
             </div>
           </div>
-          
+
           {/* Photos */}
           <div className="bg-white p-6 rounded-lg shadow-md">
             <div className="flex justify-between items-center mb-4">
@@ -100,13 +101,15 @@ export default function Listing() {
                 <ImageIcon className="h-4 w-4 mr-1" /> Manage Photos
               </button>
             </div>
-            
+
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {property.photos.map(photo => (
                 <div key={photo.id} className="relative group">
-                  <img 
-                    src={photo.url} 
-                    alt={photo.caption} 
+                  <Image
+                    src={photo.url}
+                    alt={photo.caption}
+                    width={300}
+                    height={200}
                     className="w-full h-32 object-cover rounded-md"
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-200 rounded-md"></div>
@@ -116,7 +119,7 @@ export default function Listing() {
             </div>
           </div>
         </div>
-        
+
         {/* Right column - Publishing */}
         <div className="space-y-6">
           {/* Publish panel */}
@@ -124,12 +127,12 @@ export default function Listing() {
             <h3 className="text-xl font-semibold text-gray-700 mb-4 flex items-center">
               <SendIcon className="mr-2 text-sky-500" /> Publish Listing
             </h3>
-            
+
             <div className="mb-4">
               <p className="text-sm text-gray-600 mb-2">
                 Your listing will be published to the following platforms:
               </p>
-              
+
               <div className="space-y-3 mt-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
@@ -140,7 +143,7 @@ export default function Listing() {
                   </div>
                   {getStatusIcon(publishStatus.city23)}
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
                     <div className="h-8 w-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
@@ -150,7 +153,7 @@ export default function Listing() {
                   </div>
                   {getStatusIcon(publishStatus.kv)}
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
                     <div className="h-8 w-8 bg-purple-100 rounded-full flex items-center justify-center mr-3">
@@ -162,13 +165,13 @@ export default function Listing() {
                 </div>
               </div>
             </div>
-            
+
             <button
               onClick={handlePublish}
               disabled={isPublishing || allPublished}
               className={`w-full py-2 px-4 rounded-md font-medium text-white flex items-center justify-center ${
-                isPublishing 
-                  ? 'bg-yellow-500 cursor-wait' 
+                isPublishing
+                  ? 'bg-yellow-500 cursor-wait'
                   : allPublished
                     ? 'bg-green-600 hover:bg-green-700'
                     : 'bg-sky-600 hover:bg-sky-700'
@@ -188,14 +191,14 @@ export default function Listing() {
                 </>
               )}
             </button>
-            
+
             {allPublished && (
               <div className="mt-4 p-3 bg-green-50 rounded-md text-sm text-green-700">
                 Your listing has been successfully published to all platforms. You can now manage inquiries in the CRM section.
               </div>
             )}
           </div>
-          
+
           {/* Tips panel */}
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h3 className="text-lg font-semibold text-gray-700 mb-3">Publishing Tips</h3>

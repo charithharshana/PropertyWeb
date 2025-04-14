@@ -7,7 +7,7 @@ export default function NotaryInfo() {
   return (
     <MainLayout>
       <h2 className="text-3xl font-semibold text-gray-800 mb-6">Notary Information & Services (Estonia)</h2>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* The Role of a Notary */}
         <div className="bg-white p-8 rounded-lg shadow-md">
@@ -22,17 +22,17 @@ export default function NotaryInfo() {
             <li>Confirming there are no legal obstacles to the transaction.</li>
             <li>Drafting and certifying the sales contract.</li>
             <li>Explaining the legal implications to both parties.</li>
-            <li>Handling the secure transfer of funds (via notary's deposit account).</li>
+            <li>Handling the secure transfer of funds (via notary&apos;s deposit account).</li>
             <li>Submitting the necessary documentation to the Land Register.</li>
           </ul>
           <div className="mt-6 p-4 bg-indigo-50 rounded-md">
             <p className="text-sm text-indigo-700">
-              <InfoIcon className="inline-block mr-1 h-4 w-4" /> 
-              In Estonia, using a notary for property transactions is not just recommended—it's legally required.
+              <InfoIcon className="inline-block mr-1 h-4 w-4" />
+              In Estonia, using a notary for property transactions is not just recommended—it&apos;s legally required.
             </p>
           </div>
         </div>
-        
+
         {/* Required Documents */}
         <div className="bg-white p-8 rounded-lg shadow-md">
           <h3 className="text-xl font-semibold text-gray-700 mb-4 flex items-center">
@@ -79,7 +79,7 @@ export default function NotaryInfo() {
             </div>
           </div>
         </div>
-        
+
         {/* Notary Fees */}
         <div className="bg-white p-8 rounded-lg shadow-md">
           <h3 className="text-xl font-semibold text-gray-700 mb-4 flex items-center">
@@ -125,7 +125,7 @@ export default function NotaryInfo() {
             </a>
           </div>
         </div>
-        
+
         {/* Finding a Notary */}
         <div className="bg-white p-8 rounded-lg shadow-md">
           <h3 className="text-xl font-semibold text-gray-700 mb-4 flex items-center">
@@ -158,17 +158,17 @@ export default function NotaryInfo() {
           </ol>
           <div className="mt-6 p-4 bg-blue-50 rounded-md">
             <p className="text-sm text-blue-700">
-              <InfoIcon className="inline-block mr-1 h-4 w-4" /> 
+              <InfoIcon className="inline-block mr-1 h-4 w-4" />
               Many notaries in Estonia offer services in Estonian, English, and Russian. Specify your language preference when booking.
             </p>
           </div>
         </div>
       </div>
-      
+
       {/* FAQ Section */}
       <div className="mt-8 bg-white p-8 rounded-lg shadow-md">
         <h3 className="text-xl font-semibold text-gray-700 mb-6">Frequently Asked Questions</h3>
-        
+
         <div className="space-y-6">
           <div>
             <h4 className="font-medium text-gray-800 mb-2">Do I need to attend the notary appointment in person?</h4>
@@ -176,21 +176,21 @@ export default function NotaryInfo() {
               Generally, yes. Both buyer and seller should attend in person. If this is not possible, you can authorize someone with a notarized power of attorney to represent you.
             </p>
           </div>
-          
+
           <div>
             <h4 className="font-medium text-gray-800 mb-2">How long does the notary appointment take?</h4>
             <p className="text-sm text-gray-600">
               Typically 1-2 hours. The notary will explain all documents, answer questions, and ensure both parties understand the agreement before signing.
             </p>
           </div>
-          
+
           <div>
             <h4 className="font-medium text-gray-800 mb-2">When do I need to pay the notary fees?</h4>
             <p className="text-sm text-gray-600">
               Notary fees are usually paid at the end of the appointment. Most notaries accept bank transfers and card payments.
             </p>
           </div>
-          
+
           <div>
             <h4 className="font-medium text-gray-800 mb-2">How long after the notary appointment will the property be registered to the new owner?</h4>
             <p className="text-sm text-gray-600">

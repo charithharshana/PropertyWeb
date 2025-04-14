@@ -74,7 +74,7 @@ export default function Dashboard() {
   return (
     <MainLayout>
       <h2 className="text-3xl font-bold bg-gradient-to-r from-sky-600 to-indigo-600 bg-clip-text text-transparent mb-2">Dashboard Overview</h2>
-      <p className="text-gray-500 mb-8">Welcome back! Here's an overview of your property selling journey.</p>
+      <p className="text-gray-500 mb-8">Welcome back! Here&apos;s an overview of your property selling journey.</p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Selling Progress Widget */}
