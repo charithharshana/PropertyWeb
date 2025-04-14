@@ -36,7 +36,7 @@ const DashboardWidget: React.FC<DashboardWidgetProps> = ({
 
   return (
     <motion.div
-      className="bg-white p-6 rounded-xl shadow-md border border-gray-100 relative overflow-hidden group"
+      className="bg-white p-4 sm:p-5 md:p-6 rounded-xl shadow-md border border-gray-100 relative overflow-hidden group"
       whileHover={{
         y: -5,
         boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
@@ -64,7 +64,7 @@ const DashboardWidget: React.FC<DashboardWidgetProps> = ({
         </motion.div>
 
         <motion.h3
-          className="text-lg font-semibold text-gray-800 ml-4 mt-2"
+          className="text-base sm:text-lg font-semibold text-gray-800 ml-3 sm:ml-4 mt-1 sm:mt-2"
           initial={{ opacity: 0, x: -10 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -118,7 +118,7 @@ export default function Dashboard() {
   return (
     <MainLayout>
       <AnimatedSection animation="fadeIn" delay={0.1}>
-        <h2 className="text-3xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent mb-2">Dashboard Overview</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent mb-2">Dashboard Overview</h2>
         <p className="text-gray-500 mb-8">Welcome back! Here&apos;s an overview of your property selling journey.</p>
       </AnimatedSection>
 

@@ -55,13 +55,13 @@ export default function Listing() {
 
   return (
     <MainLayout>
-      <h2 className="text-3xl font-semibold text-gray-800 mb-6">Listing & Publish</h2>
+      <h2 className="text-2xl sm:text-3xl font-semibold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent mb-4 sm:mb-6">Listing & Publish</h2>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left column - Property details */}
         <div className="lg:col-span-2 space-y-6">
           {/* Property summary */}
-          <div className="bg-white p-6 rounded-lg shadow-md">
+          <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md">
             <h3 className="text-xl font-semibold text-gray-700 mb-4">Property Summary</h3>
 
             <div className="grid grid-cols-2 gap-4 mb-4">

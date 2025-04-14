@@ -72,7 +72,7 @@ export default function PropertyPreparation() {
   return (
     <MainLayout>
       <AnimatedSection animation="fadeIn">
-        <h2 className="text-3xl font-semibold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent mb-6">Property Preparation</h2>
+        <h2 className="text-2xl sm:text-3xl font-semibold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent mb-4 sm:mb-6">Property Preparation</h2>
       </AnimatedSection>
 
       {/* Tabs */}

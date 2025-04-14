@@ -9,6 +9,9 @@ const nextConfig = {
   // Add any other Next.js configuration options as needed
   images: {
     domains: ['placehold.co'],
+    dangerouslyAllowSVG: true,
+    contentDispositionType: 'attachment',
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
 }
 
