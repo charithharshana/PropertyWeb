@@ -18,6 +18,11 @@ interface SidebarLinkProps {
   onClick?: () => void
 }
 
+// Interface for the Sidebar component
+interface SidebarProps {
+  onLinkClick?: () => void
+}
+
 // Individual sidebar link component
 const SidebarLink: React.FC<SidebarLinkProps> = ({
   href, label, icon, active, onClick
@@ -40,7 +45,7 @@ const SidebarLink: React.FC<SidebarLinkProps> = ({
 }
 
 // Main Sidebar component
-export default function Sidebar() {
+export default function Sidebar({ onLinkClick }: SidebarProps) {
   const pathname = usePathname()
   const [activePath, setActivePath] = useState<string>('')
 
@@ -72,6 +77,13 @@ export default function Sidebar() {
     console.log('Logout clicked')
   }
 
+  // Handle link click with optional callback
+  const handleLinkClick = () => {
+    if (onLinkClick) {
+      onLinkClick()
+    }
+  }
+
   return (
     <aside className="w-72 bg-white shadow-lg overflow-y-auto flex flex-col h-screen border-r border-gray-100">
       <div className="p-6 border-b border-gray-100">
@@ -99,6 +111,7 @@ export default function Sidebar() {
             label={link.label}
             icon={link.icon}
             active={activePath === link.href}
+            onClick={handleLinkClick}
           />
         ))}
       </nav>

@@ -30,7 +30,7 @@ export default function AnimatedCard({
             }
           : undefined
       }
-      className={`bg-white rounded-lg shadow-md transition-all duration-300 ${className}`}
+      className={`bg-white rounded-lg shadow-md transition-all duration-300 p-3 sm:p-4 md:p-6 ${className}`}
     >
       {children}
     </motion.div>

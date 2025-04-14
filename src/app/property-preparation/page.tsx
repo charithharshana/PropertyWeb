@@ -76,10 +76,10 @@ export default function PropertyPreparation() {
       </AnimatedSection>
 
       {/* Tabs */}
-      <motion.div className="flex border-b border-gray-200 mb-6" initial="hidden" animate="visible" variants={contentVariants}>
+      <motion.div className="flex flex-wrap border-b border-gray-200 mb-6" initial="hidden" animate="visible" variants={contentVariants}>
         <motion.button
           onClick={() => setActiveTab('ad-text')}
-          className={`py-3 px-6 font-medium text-sm focus:outline-none ${
+          className={`py-2 px-3 sm:py-3 sm:px-6 font-medium text-xs sm:text-sm focus:outline-none ${
             activeTab === 'ad-text'
               ? 'text-primary-600 border-b-2 border-primary-500'
               : 'text-gray-500 hover:text-gray-700'
@@ -93,7 +93,7 @@ export default function PropertyPreparation() {
         </motion.button>
         <motion.button
           onClick={() => setActiveTab('photos')}
-          className={`py-3 px-6 font-medium text-sm focus:outline-none ${
+          className={`py-2 px-3 sm:py-3 sm:px-6 font-medium text-xs sm:text-sm focus:outline-none ${
             activeTab === 'photos'
               ? 'text-primary-600 border-b-2 border-primary-500'
               : 'text-gray-500 hover:text-gray-700'
@@ -107,7 +107,7 @@ export default function PropertyPreparation() {
         </motion.button>
         <motion.button
           onClick={() => setActiveTab('staging')}
-          className={`py-3 px-6 font-medium text-sm focus:outline-none ${
+          className={`py-2 px-3 sm:py-3 sm:px-6 font-medium text-xs sm:text-sm focus:outline-none ${
             activeTab === 'staging'
               ? 'text-primary-600 border-b-2 border-primary-500'
               : 'text-gray-500 hover:text-gray-700'
@@ -119,7 +119,7 @@ export default function PropertyPreparation() {
         >
           <BrushIcon className="inline-block mr-2 h-4 w-4" /> Staging Checklist
         </motion.button>
-      </div>
+      </motion.div>
 
       {/* Ad Text Tab */}
       {activeTab === 'ad-text' && (
@@ -147,10 +147,10 @@ export default function PropertyPreparation() {
               Provide some key highlights, and our AI will help craft a compelling description. You can then review and edit.
             </motion.p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             <div>
               <label htmlFor="ad-highlights" className="block text-sm font-medium text-gray-700 mb-1">
-                Key Highlights (Keywords)
+                Property Highlights
               </label>
               <textarea
                 id="ad-highlights"
@@ -188,21 +188,10 @@ export default function PropertyPreparation() {
                 value={editedText}
                 onChange={(e) => setEditedText(e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded-md focus:ring-sky-500 focus:border-sky-500 h-40"
-                placeholder={isGenerating ? 'Generating...' : 'Your generated text will appear here'}
-                readOnly={isGenerating}
+                placeholder="Your AI-generated description will appear here"
+                disabled={!generatedText}
               ></textarea>
-              <div className="mt-2 flex justify-between">
-                <button
-                  onClick={() => setEditedText(generatedText)}
-                  disabled={!generatedText || isGenerating}
-                  className={`${
-                    !generatedText || isGenerating
-                      ? 'bg-gray-300 cursor-not-allowed'
-                      : 'bg-gray-200 hover:bg-gray-300'
-                  } text-gray-700 font-medium py-1 px-3 text-sm rounded-md transition duration-150 ease-in-out`}
-                >
-                  Reset to Original
-                </button>
+              <div className="flex justify-end mt-2">
                 <button
                   disabled={!editedText.trim()}
                   className={`${
@@ -227,7 +216,8 @@ export default function PropertyPreparation() {
               <li>Keep it concise but comprehensive</li>
             </ul>
           </div>
-        </div>
+          </motion.div>
+        </AnimatedCard>
       )}
 
       {/* Photos Tab */}

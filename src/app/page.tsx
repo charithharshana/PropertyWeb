@@ -71,7 +71,7 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center p-8 bg-gradient-to-br from-primary-50 to-secondary-50 relative overflow-hidden">
+    <main className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 bg-gradient-to-br from-primary-50 to-secondary-50 relative overflow-hidden">
       {/* Background decorative elements */}
       <motion.div
         className="absolute top-0 left-0 w-full h-full overflow-hidden z-0"
@@ -85,7 +85,7 @@ export default function Home() {
       </motion.div>
 
       <motion.div
-        className="z-10 w-full max-w-md flex flex-col items-center justify-center text-center"
+        className="z-10 w-full max-w-xs sm:max-w-sm md:max-w-md flex flex-col items-center justify-center text-center px-4 sm:px-0"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -100,7 +100,7 @@ export default function Home() {
         </motion.div>
 
         <motion.h1
-          className="text-4xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent mb-2"
+          className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent mb-2"
           variants={itemVariants}
         >
           HomeFlow
@@ -201,8 +201,8 @@ export default function Home() {
               </p>
             </motion.div>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </main>
   )
 }
