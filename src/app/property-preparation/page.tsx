@@ -2,8 +2,10 @@
 
 import { useState } from 'react'
 import MainLayout from '@/components/layout/MainLayout'
+import { motion } from 'framer-motion'
 import { BrushIcon, FileTextIcon, ImageIcon, CheckSquareIcon, Loader2Icon } from 'lucide-react'
 import { generateAdText } from '@/lib/openai'
+import { AnimatedSection, AnimatedCard, AnimatedButton, AnimatedList } from '@/components/animations'
 
 export default function PropertyPreparation() {
   const [activeTab, setActiveTab] = useState('ad-text')
@@ -49,53 +51,101 @@ export default function PropertyPreparation() {
 
   const checklistProgress = Object.values(checklist).filter(Boolean).length / Object.values(checklist).length * 100
 
+  // Animation variants
+  const tabVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+    active: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.3 },
+      borderBottom: '2px solid #0ea5e9',
+      color: '#0284c7'
+    }
+  }
+
+  const contentVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.5 } }
+  }
+
   return (
     <MainLayout>
-      <h2 className="text-3xl font-semibold text-gray-800 mb-6">Property Preparation</h2>
+      <AnimatedSection animation="fadeIn">
+        <h2 className="text-3xl font-semibold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent mb-6">Property Preparation</h2>
+      </AnimatedSection>
 
       {/* Tabs */}
-      <div className="flex border-b border-gray-200 mb-6">
-        <button
+      <motion.div className="flex border-b border-gray-200 mb-6" initial="hidden" animate="visible" variants={contentVariants}>
+        <motion.button
           onClick={() => setActiveTab('ad-text')}
           className={`py-3 px-6 font-medium text-sm focus:outline-none ${
             activeTab === 'ad-text'
-              ? 'text-sky-600 border-b-2 border-sky-500'
+              ? 'text-primary-600 border-b-2 border-primary-500'
               : 'text-gray-500 hover:text-gray-700'
           }`}
+          variants={tabVariants}
+          animate={activeTab === 'ad-text' ? 'active' : 'visible'}
+          whileHover={{ y: -2 }}
+          whileTap={{ y: 0 }}
         >
           <FileTextIcon className="inline-block mr-2 h-4 w-4" /> Ad Text
-        </button>
-        <button
+        </motion.button>
+        <motion.button
           onClick={() => setActiveTab('photos')}
           className={`py-3 px-6 font-medium text-sm focus:outline-none ${
             activeTab === 'photos'
-              ? 'text-sky-600 border-b-2 border-sky-500'
+              ? 'text-primary-600 border-b-2 border-primary-500'
               : 'text-gray-500 hover:text-gray-700'
           }`}
+          variants={tabVariants}
+          animate={activeTab === 'photos' ? 'active' : 'visible'}
+          whileHover={{ y: -2 }}
+          whileTap={{ y: 0 }}
         >
           <ImageIcon className="inline-block mr-2 h-4 w-4" /> Photos
-        </button>
-        <button
+        </motion.button>
+        <motion.button
           onClick={() => setActiveTab('staging')}
           className={`py-3 px-6 font-medium text-sm focus:outline-none ${
             activeTab === 'staging'
-              ? 'text-sky-600 border-b-2 border-sky-500'
+              ? 'text-primary-600 border-b-2 border-primary-500'
               : 'text-gray-500 hover:text-gray-700'
           }`}
+          variants={tabVariants}
+          animate={activeTab === 'staging' ? 'active' : 'visible'}
+          whileHover={{ y: -2 }}
+          whileTap={{ y: 0 }}
         >
           <BrushIcon className="inline-block mr-2 h-4 w-4" /> Staging Checklist
-        </button>
+        </motion.button>
       </div>
 
       {/* Ad Text Tab */}
       {activeTab === 'ad-text' && (
-        <div className="bg-white p-8 rounded-lg shadow-md">
-          <h3 className="text-xl font-semibold text-gray-700 mb-4 flex items-center">
-            <FileTextIcon className="mr-2 text-sky-500" /> Ad Text Generation (AI Assisted)
-          </h3>
-          <p className="text-sm text-gray-600 mb-4">
-            Provide some key highlights, and our AI will help craft a compelling description. You can then review and edit.
-          </p>
+        <AnimatedCard delay={0.2}>
+          <motion.div
+            className="p-8"
+            initial="hidden"
+            animate="visible"
+            variants={contentVariants}
+          >
+            <motion.h3
+              className="text-xl font-semibold text-gray-700 mb-4 flex items-center"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <FileTextIcon className="mr-2 text-primary-500 animate-pulse-light" /> Ad Text Generation (AI Assisted)
+            </motion.h3>
+            <motion.p
+              className="text-sm text-gray-600 mb-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              Provide some key highlights, and our AI will help craft a compelling description. You can then review and edit.
+            </motion.p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
@@ -109,14 +159,15 @@ export default function PropertyPreparation() {
                 className="w-full p-2 border border-gray-300 rounded-md focus:ring-sky-500 focus:border-sky-500 h-40"
                 placeholder="Enter keywords or highlights about your property (e.g., sunny, renovated kitchen, close to transport, quiet street)"
               ></textarea>
-              <button
+              <AnimatedButton
                 onClick={handleGenerateText}
                 disabled={isGenerating || !adHighlights.trim()}
+                variant={isGenerating || !adHighlights.trim() ? 'ghost' : 'primary'}
                 className={`mt-2 ${
                   isGenerating || !adHighlights.trim()
                     ? 'bg-gray-300 cursor-not-allowed'
-                    : 'bg-sky-600 hover:bg-sky-700'
-                } text-white font-medium py-2 px-4 rounded-md transition duration-150 ease-in-out flex items-center`}
+                    : ''
+                } text-white font-medium py-2 px-4 rounded-md flex items-center`}
               >
                 {isGenerating ? (
                   <>
@@ -125,7 +176,7 @@ export default function PropertyPreparation() {
                 ) : (
                   'Generate Ad Text'
                 )}
-              </button>
+              </AnimatedButton>
             </div>
 
             <div>
@@ -181,60 +232,117 @@ export default function PropertyPreparation() {
 
       {/* Photos Tab */}
       {activeTab === 'photos' && (
-        <div className="bg-white p-8 rounded-lg shadow-md">
-          <h3 className="text-xl font-semibold text-gray-700 mb-4 flex items-center">
-            <ImageIcon className="mr-2 text-sky-500" /> Property Photos
-          </h3>
-          <p className="text-sm text-gray-600 mb-4">
-            Upload high-quality photos of your property. Good photos significantly increase buyer interest.
-          </p>
+        <AnimatedCard delay={0.2}>
+          <motion.div
+            className="p-8"
+            initial="hidden"
+            animate="visible"
+            variants={contentVariants}
+          >
+            <motion.h3
+              className="text-xl font-semibold text-gray-700 mb-4 flex items-center"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <ImageIcon className="mr-2 text-primary-500 animate-pulse-light" /> Property Photos
+            </motion.h3>
+            <motion.p
+              className="text-sm text-gray-600 mb-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              Upload high-quality photos of your property. Good photos significantly increase buyer interest.
+            </motion.p>
 
-          <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
-            <ImageIcon className="mx-auto h-12 w-12 text-gray-400" />
-            <p className="mt-2 text-sm text-gray-600">Drag and drop photos here, or click to select files</p>
-            <button className="mt-4 bg-sky-600 hover:bg-sky-700 text-white font-medium py-2 px-4 rounded-md transition duration-150 ease-in-out">
-              Select Photos
-            </button>
-            <p className="mt-2 text-xs text-gray-500">Supported formats: JPG, PNG. Max size: 10MB per image.</p>
-          </div>
+            <motion.div
+              className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center"
+              whileHover={{ borderColor: '#0ea5e9', scale: 1.01 }}
+              transition={{ duration: 0.3 }}
+            >
+              <motion.div
+                animate={{
+                  y: [0, -5, 0],
+                  transition: { duration: 2, repeat: Infinity }
+                }}
+              >
+                <ImageIcon className="mx-auto h-12 w-12 text-gray-400" />
+              </motion.div>
+              <p className="mt-2 text-sm text-gray-600">Drag and drop photos here, or click to select files</p>
+              <AnimatedButton
+                className="mt-4"
+                variant="primary"
+              >
+                Select Photos
+              </AnimatedButton>
+              <p className="mt-2 text-xs text-gray-500">Supported formats: JPG, PNG. Max size: 10MB per image.</p>
+            </motion.div>
 
-          <div className="mt-6 p-4 bg-sky-50 rounded-md text-sm text-gray-600">
-            <p className="font-medium text-sky-700 mb-2">Photo tips:</p>
-            <ul className="list-disc list-inside space-y-1">
+          <motion.div
+            className="mt-6 p-4 bg-primary-50 rounded-md text-sm text-gray-600"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.8 }}
+          >
+            <p className="font-medium text-primary-700 mb-2">Photo tips:</p>
+            <AnimatedList className="list-disc list-inside space-y-1" staggerDelay={0.1}>
               <li>Use natural lighting when possible</li>
               <li>Take photos during daylight hours</li>
               <li>Ensure the property is clean and decluttered</li>
               <li>Include photos of all rooms and outdoor spaces</li>
               <li>Consider wide-angle shots to show the full space</li>
-            </ul>
-          </div>
-        </div>
+            </AnimatedList>
+          </motion.div>
+          </motion.div>
+        </AnimatedCard>
       )}
 
       {/* Staging Checklist Tab */}
       {activeTab === 'staging' && (
-        <div className="bg-white p-8 rounded-lg shadow-md">
-          <h3 className="text-xl font-semibold text-gray-700 mb-4 flex items-center">
-            <CheckSquareIcon className="mr-2 text-sky-500" /> Staging Checklist
-          </h3>
-          <p className="text-sm text-gray-600 mb-4">
-            Use this checklist to prepare your property for viewings and photos.
-          </p>
+        <AnimatedCard delay={0.2}>
+          <motion.div
+            className="p-8"
+            initial="hidden"
+            animate="visible"
+            variants={contentVariants}
+          >
+            <motion.h3
+              className="text-xl font-semibold text-gray-700 mb-4 flex items-center"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <CheckSquareIcon className="mr-2 text-primary-500 animate-bounce-light" /> Staging Checklist
+            </motion.h3>
+            <motion.p
+              className="text-sm text-gray-600 mb-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              Use this checklist to prepare your property for viewings and photos.
+            </motion.p>
 
-          <div className="mb-4">
-            <div className="flex items-center justify-between mb-1">
-              <span className="text-sm text-gray-600">Staging Progress</span>
-              <span className="text-sm font-medium text-sky-600">{Math.round(checklistProgress)}% Complete</span>
+            <div className="mb-4">
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-sm text-gray-600">Staging Progress</span>
+                <span className="text-sm font-medium text-primary-600">{Math.round(checklistProgress)}% Complete</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <motion.div
+                  className="bg-primary-500 h-2 rounded-full"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${checklistProgress}%` }}
+                  transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
+                ></motion.div>
+              </div>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <div
-                className="bg-sky-500 h-2 rounded-full"
-                style={{ width: `${checklistProgress}%` }}
-              ></div>
-            </div>
-          </div>
 
-          <div className="space-y-3">
+          <AnimatedList
+            className="space-y-3"
+            staggerDelay={0.05}
+          >
             {[
               { id: 'clean-surfaces', label: 'Clean all surfaces, floors, and windows' },
               { id: 'declutter', label: 'Remove clutter and excess personal items' },
@@ -245,27 +353,39 @@ export default function PropertyPreparation() {
               { id: 'furniture-arrangement', label: 'Arrange furniture to maximize space' },
               { id: 'curb-appeal', label: 'Enhance curb appeal (tidy garden, clean entrance)' }
             ].map(item => (
-              <div key={item.id} className="flex items-center">
-                <input
+              <motion.div
+                key={item.id}
+                className="flex items-center"
+                whileHover={{ x: 5, transition: { duration: 0.2 } }}
+              >
+                <motion.input
                   type="checkbox"
                   id={item.id}
                   checked={checklist[item.id as keyof typeof checklist]}
                   onChange={() => handleChecklistChange(item.id)}
-                  className="h-5 w-5 text-sky-600 focus:ring-sky-500 border-gray-300 rounded"
+                  className="h-5 w-5 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                  whileHover={{ scale: 1.2 }}
+                  whileTap={{ scale: 0.9 }}
                 />
                 <label htmlFor={item.id} className="ml-3 text-sm text-gray-700">{item.label}</label>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </AnimatedList>
 
-          <div className="mt-6 p-4 bg-sky-50 rounded-md text-sm text-gray-600">
-            <p className="font-medium text-sky-700 mb-2">Why staging matters:</p>
+          <motion.div
+            className="mt-6 p-4 bg-primary-50 rounded-md text-sm text-gray-600"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.8 }}
+          >
+            <p className="font-medium text-primary-700 mb-2">Why staging matters:</p>
             <p>
               Well-staged properties typically sell faster and for higher prices. Staging helps buyers
               visualize themselves living in the space and highlights your property&apos;s best features.
             </p>
-          </div>
-        </div>
+          </motion.div>
+          </motion.div>
+        </AnimatedCard>
       )}
     </MainLayout>
   )

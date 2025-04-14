@@ -3,11 +3,13 @@
 import { useState, useEffect } from 'react'
 import MainLayout from '@/components/layout/MainLayout'
 import Link from 'next/link'
+import { motion } from 'framer-motion'
 import {
   ListChecksIcon, DollarSignIcon, BrushIcon, SendIcon,
   UsersIcon, BookOpenIcon, ArrowRightIcon, CheckCircleIcon,
   LoaderIcon, CircleDashedIcon, FileTextIcon
 } from 'lucide-react'
+import { AnimatedCard, AnimatedSection, AnimatedList } from '@/components/animations'
 
 // Dashboard widget component for reuse
 interface DashboardWidgetProps {
@@ -23,40 +25,71 @@ const DashboardWidget: React.FC<DashboardWidgetProps> = ({
   title, icon, children, linkText, linkHref, accentColor = 'sky'
 }) => {
   const accentClasses = {
-    sky: 'from-sky-500 to-sky-600',
+    sky: 'from-primary-500 to-primary-600',
     green: 'from-emerald-500 to-emerald-600',
     amber: 'from-amber-500 to-amber-600',
-    indigo: 'from-indigo-500 to-indigo-600',
+    indigo: 'from-secondary-500 to-secondary-600',
     purple: 'from-purple-500 to-purple-600',
     teal: 'from-teal-500 to-teal-600',
-  }[accentColor] || 'from-sky-500 to-sky-600';
+    accent: 'from-accent-500 to-accent-600'
+  }[accentColor] || 'from-primary-500 to-primary-600';
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 relative overflow-hidden group">
+    <motion.div
+      className="bg-white p-6 rounded-xl shadow-md border border-gray-100 relative overflow-hidden group"
+      whileHover={{
+        y: -5,
+        boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+        transition: { duration: 0.3 }
+      }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       {/* Accent color gradient line at top */}
-      <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${accentClasses}`}></div>
+      <motion.div
+        className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${accentClasses}`}
+        initial={{ width: 0 }}
+        animate={{ width: '100%' }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+      ></motion.div>
 
       <div className="flex items-start">
-        <div className={`flex-shrink-0 p-3 rounded-lg bg-gradient-to-br ${accentClasses} text-white shadow-md`}>
+        <motion.div
+          className={`flex-shrink-0 p-3 rounded-lg bg-gradient-to-br ${accentClasses} text-white shadow-md`}
+          whileHover={{ scale: 1.1, rotate: 5 }}
+          whileTap={{ scale: 0.95 }}
+        >
           {icon}
-        </div>
+        </motion.div>
 
-        <h3 className="text-lg font-semibold text-gray-800 ml-4 mt-2">
+        <motion.h3
+          className="text-lg font-semibold text-gray-800 ml-4 mt-2"
+          initial={{ opacity: 0, x: -10 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
           {title}
-        </h3>
+        </motion.h3>
       </div>
 
       <div className="mt-4">{children}</div>
 
       {linkText && linkHref && (
-        <Link
-          href={linkHref}
-          className={`mt-5 inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gradient-to-r ${accentClasses} rounded-lg shadow-sm hover:shadow transition-all duration-200`}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
         >
-          {linkText} <ArrowRightIcon className="ml-1 h-4 w-4" />
-        </Link>
+          <Link
+            href={linkHref}
+            className={`mt-5 inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gradient-to-r ${accentClasses} rounded-lg shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 transform`}
+          >
+            {linkText} <ArrowRightIcon className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" />
+          </Link>
+        </motion.div>
       )}
-    </div>
+    </motion.div>
   )
 }
 
@@ -71,12 +104,30 @@ export default function Dashboard() {
   const [propertyValue, setPropertyValue] = useState('€255,000*')
   const [newLeads, setNewLeads] = useState(3)
 
+  // Animation variants
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  }
+
   return (
     <MainLayout>
-      <h2 className="text-3xl font-bold bg-gradient-to-r from-sky-600 to-indigo-600 bg-clip-text text-transparent mb-2">Dashboard Overview</h2>
-      <p className="text-gray-500 mb-8">Welcome back! Here&apos;s an overview of your property selling journey.</p>
+      <AnimatedSection animation="fadeIn" delay={0.1}>
+        <h2 className="text-3xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent mb-2">Dashboard Overview</h2>
+        <p className="text-gray-500 mb-8">Welcome back! Here&apos;s an overview of your property selling journey.</p>
+      </AnimatedSection>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <motion.div
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        variants={staggerContainer}
+        initial="hidden"
+        animate="visible"
+      >
         {/* Selling Progress Widget */}
         <DashboardWidget
           title="Selling Progress"
@@ -94,10 +145,12 @@ export default function Dashboard() {
                 </span>
               </div>
               <div className="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
-                <div
-                  className="bg-gradient-to-r from-emerald-400 to-emerald-500 h-2.5 rounded-full transition-all duration-500"
-                  style={{ width: `${sellingProgress.evaluation.progress}%` }}
-                ></div>
+                <motion.div
+                  className="bg-gradient-to-r from-emerald-400 to-emerald-500 h-2.5 rounded-full"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${sellingProgress.evaluation.progress}%` }}
+                  transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
+                ></motion.div>
               </div>
             </div>
 
@@ -109,10 +162,12 @@ export default function Dashboard() {
                 </span>
               </div>
               <div className="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
-                <div
-                  className="bg-gradient-to-r from-amber-400 to-amber-500 h-2.5 rounded-full transition-all duration-500"
-                  style={{ width: `${sellingProgress.preparation.progress}%` }}
-                ></div>
+                <motion.div
+                  className="bg-gradient-to-r from-amber-400 to-amber-500 h-2.5 rounded-full"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${sellingProgress.preparation.progress}%` }}
+                  transition={{ duration: 1, delay: 0.7, ease: "easeOut" }}
+                ></motion.div>
               </div>
             </div>
 
@@ -124,10 +179,12 @@ export default function Dashboard() {
                 </span>
               </div>
               <div className="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
-                <div
-                  className="bg-gray-300 h-2.5 rounded-full transition-all duration-500"
-                  style={{ width: `${sellingProgress.listing.progress}%` }}
-                ></div>
+                <motion.div
+                  className="bg-gray-300 h-2.5 rounded-full"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${sellingProgress.listing.progress}%` }}
+                  transition={{ duration: 1, delay: 0.9, ease: "easeOut" }}
+                ></motion.div>
               </div>
             </div>
           </div>
@@ -281,7 +338,7 @@ export default function Dashboard() {
             </li>
           </ul>
         </DashboardWidget>
-      </div>
+      </motion.div>
     </MainLayout>
   )
 }
