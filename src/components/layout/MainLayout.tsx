@@ -54,7 +54,8 @@ export default function MainLayout({ children }: MainLayoutProps) {
   // Sidebar variants for mobile
   const sidebarVariants = {
     open: { x: 0, transition: { type: 'spring', stiffness: 300, damping: 30 } },
-    closed: { x: '-100%', transition: { type: 'spring', stiffness: 300, damping: 30 } }
+    closed: { x: '-100%', transition: { type: 'spring', stiffness: 300, damping: 30 } },
+    visible: { x: 0, transition: { duration: 0 } } // Default state for desktop
   }
 
   // Toggle sidebar
@@ -86,9 +87,9 @@ export default function MainLayout({ children }: MainLayoutProps) {
         {(!isMobile || isSidebarOpen) && (
           <motion.div
             className={`${isMobile ? 'fixed z-50' : 'relative'} h-full`}
-            initial={isMobile ? 'closed' : false}
-            animate={isMobile ? 'open' : false}
-            exit={isMobile ? 'closed' : false}
+            initial={isMobile ? 'closed' : 'visible'}
+            animate={isMobile ? 'open' : 'visible'}
+            exit='closed'
             variants={sidebarVariants}
           >
             <Sidebar onLinkClick={isMobile ? toggleSidebar : undefined} />
