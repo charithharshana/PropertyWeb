@@ -1,0 +1,110 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model for authentication and user data
+model User {
+  id            String     @id @default(cuid())
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  email         String     @unique
+  passwordHash  String?
+  name          String?
+  properties    Property[]
+  crmContacts   CRMContact[]
+}
+
+// Property model for storing property details
+model Property {
+  id              String         @id @default(cuid())
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  userId          String
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  address         String
+  propertyType    String         // Apartment, House, Townhouse, Land, etc.
+  size            Float          // in square meters
+  bedrooms        Int?
+  bathrooms       Int?
+  yearBuilt       Int?
+  condition       String?        // Excellent, Good, Average, Fair, Poor
+  hasBalcony      Boolean?       @default(false)
+  features        String[]       // Array of features like "Parking", "Sauna", etc.
+  evaluations     Evaluation[]
+  photos          Photo[]
+  adText          AdText?
+  listingStatus   String         @default("draft") // draft, published, sold
+  publishedTo     String[]       // Array of platforms it's published to
+  price           Float?         // Asking price or estimated value
+  stagingChecklist Json?         // JSON field for storing checklist items
+  crmContacts     CRMContact[]
+  
+  // Timestamps for tracking process steps
+  evaluationCompletedAt DateTime?
+  adTextGeneratedAt    DateTime?
+  photosUploadedAt     DateTime?
+  publishedAt          DateTime?
+}
+
+// Evaluation model for storing property evaluation data
+model Evaluation {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  propertyId  String
+  property    Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  questions   Json      // Storing the evaluation questions and answers
+  result      Float     // Estimated value result
+  completed   Boolean   @default(false)
+}
+
+// Photo model for storing property photos
+model Photo {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  propertyId  String
+  property    Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  url         String    // URL or path to the photo
+  caption     String?
+  order       Int       @default(0) // For ordering photos in the gallery
+}
+
+// AdText model for storing generated ad descriptions
+model AdText {
+  id           String    @id @default(cuid())
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  propertyId   String    @unique
+  property     Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  userPrompt   String    // User input keywords/highlights
+  generatedText String   // AI-generated text
+  editedText   String?   // User-edited version of the generated text
+  language     String    @default("en")
+}
+
+// CRMContact model for managing potential buyers
+model CRMContact {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  propertyId  String?
+  property    Property? @relation(fields: [propertyId], references: [id])
+  name        String
+  email       String?
+  phone       String?
+  interest    String    // High, Medium, Low, Unknown
+  status      String    // Initial Inquiry, Contacted, Viewing Scheduled, etc.
+  notes       String?   // Notes about the contact
+  nextFollowUp DateTime? // When to follow up next
+}

@@ -1,0 +1,1701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomeFlow - Sell Your Property</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide-react@0.372.0/dist/umd/lucide.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth; /* Smooth scrolling for internal links */
+        }
+        /* Custom scrollbar for better aesthetics (optional) */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; /* slate-300 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; /* slate-400 */
+        }
+        /* Style for active sidebar link */
+        .sidebar-link.active {
+            background-color: #e0f2fe; /* sky-100 */
+            color: #0369a1; /* sky-700 */
+            font-weight: 600;
+        }
+        /* Hide sections by default */
+        .content-section {
+            display: none;
+        }
+        /* Show the active section */
+        .content-section.active {
+            display: block;
+        }
+        /* Simple transition for section display */
+        .content-section {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Progress dots styling */
+        .progress-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #cbd5e1; /* slate-300 */
+            transition: background-color 0.3s ease;
+        }
+        .progress-dot.active {
+            background-color: #0ea5e9; /* sky-500 */
+        }
+        .progress-dot.completed {
+            background-color: #10b981; /* emerald-500 */
+        }
+        /* Ensure icons render correctly */
+        i[data-lucide] {
+            display: inline-block;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="flex h-screen overflow-hidden">
+        <aside class="w-64 bg-white shadow-md overflow-y-auto flex flex-col">
+            <div class="p-6 border-b border-gray-200">
+                <h1 class="text-2xl font-bold text-sky-600 flex items-center">
+                    <i data-lucide="home" class="mr-2 h-6 w-6"></i> HomeFlow
+                </h1>
+                <p class="text-sm text-gray-500 mt-1">Simplify Your Sale</p>
+            </div>
+            <nav class="flex-1 p-4 space-y-2">
+                <a href="#dashboard" class="sidebar-link flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md active" data-section="dashboard">
+                    <i data-lucide="layout-dashboard" class="mr-3 h-5 w-5"></i> Dashboard
+                </a>
+                <a href="#property-evaluation" class="sidebar-link flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md" data-section="property-evaluation">
+                    <i data-lucide="dollar-sign" class="mr-3 h-5 w-5"></i> Evaluation
+                </a>
+                <a href="#initial-setup" class="sidebar-link flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md" data-section="initial-setup">
+                    <i data-lucide="settings" class="mr-3 h-5 w-5"></i> How it Works
+                </a>
+                <a href="#property-preparation" class="sidebar-link flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md" data-section="property-preparation">
+                    <i data-lucide="brush" class="mr-3 h-5 w-5"></i> Preparation
+                </a>
+                <a href="#listing-publishing" class="sidebar-link flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md" data-section="listing-publishing">
+                    <i data-lucide="send" class="mr-3 h-5 w-5"></i> Listing & Publish
+                </a>
+                <a href="#notary-info" class="sidebar-link flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md" data-section="notary-info">
+                    <i data-lucide="file-text" class="mr-3 h-5 w-5"></i> Notary Info
+                </a>
+                <a href="#after-sale" class="sidebar-link flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md" data-section="after-sale">
+                    <i data-lucide="package-check" class="mr-3 h-5 w-5"></i> After Sale
+                </a>
+                <a href="#crm" class="sidebar-link flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md" data-section="crm">
+                    <i data-lucide="users" class="mr-3 h-5 w-5"></i> CRM
+                </a>
+                <a href="#knowledge-base" class="sidebar-link flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md" data-section="knowledge-base">
+                    <i data-lucide="book-open" class="mr-3 h-5 w-5"></i> Knowledge Base
+                </a>
+            </nav>
+            <div class="p-4 border-t border-gray-200">
+                 <button class="w-full flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
+                    <i data-lucide="log-out" class="mr-2 h-4 w-4"></i> Logout
+                 </button>
+            </div>
+        </aside>
+
+        <main id="main-content" class="flex-1 overflow-y-auto p-8 bg-gradient-to-br from-sky-50 to-indigo-50">
+            <section id="dashboard" class="content-section active">
+                <h2 class="text-3xl font-semibold text-gray-800 mb-6">Dashboard Overview</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition-shadow">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-4 flex items-center"><i data-lucide="list-checks" class="mr-2 text-sky-500"></i> Selling Progress</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600">Evaluation</span>
+                                <span class="text-sm font-medium text-green-600 flex items-center"><i data-lucide="check-circle" class="mr-1 h-4 w-4"></i> Completed</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 100%;"></div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600">Preparation</span>
+                                <span class="text-sm font-medium text-yellow-600 flex items-center"><i data-lucide="loader" class="mr-1 h-4 w-4 animate-spin"></i> In Progress</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-yellow-500 h-2 rounded-full" style="width: 60%;"></div>
+                            </div>
+                             <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600">Listing</span>
+                                <span class="text-sm font-medium text-gray-500 flex items-center"><i data-lucide="circle-dashed" class="mr-1 h-4 w-4"></i> Not Started</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-gray-400 h-2 rounded-full" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                        <button onclick="navigateToSection('property-preparation')" class="mt-4 text-sm text-sky-600 hover:text-sky-800 font-medium flex items-center">Continue Preparation <i data-lucide="arrow-right" class="ml-1 h-4 w-4"></i></button>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition-shadow">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-4 flex items-center"><i data-lucide="dollar-sign" class="mr-2 text-green-500"></i> Estimated Value</h3>
+                        <p class="text-3xl font-bold text-gray-800" id="dashboard-evaluation-result">€255,000*</p>
+                        <p class="text-xs text-gray-500 mt-2">*Based on initial data. Subject to market changes and professional appraisal.</p>
+                        <button onclick="navigateToSection('property-evaluation')" class="mt-4 text-sm text-sky-600 hover:text-sky-800 font-medium flex items-center">View Details <i data-lucide="arrow-right" class="ml-1 h-4 w-4"></i></button>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition-shadow">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-4 flex items-center"><i data-lucide="brush" class="mr-2 text-amber-500"></i> Preparation Status</h3>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex items-center text-gray-600"><i data-lucide="check" class="mr-2 h-4 w-4 text-green-500"></i> Ad Text: Draft Saved</li>
+                            <li class="flex items-center text-gray-600"><i data-lucide="loader" class="mr-2 h-4 w-4 text-yellow-500 animate-spin"></i> Photos: Pending Upload</li>
+                            <li class="flex items-center text-gray-600"><i data-lucide="circle-dashed" class="mr-2 h-4 w-4 text-gray-400"></i> Staging: Checklist Started</li>
+                        </ul>
+                        <button onclick="navigateToSection('property-preparation')" class="mt-4 text-sm text-sky-600 hover:text-sky-800 font-medium flex items-center">Manage Preparation <i data-lucide="arrow-right" class="ml-1 h-4 w-4"></i></button>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition-shadow">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-4 flex items-center"><i data-lucide="send" class="mr-2 text-indigo-500"></i> Listing Status</h3>
+                        <p class="text-sm text-gray-600 mb-2">Publishing not yet initiated.</p>
+                         <div class="space-y-1 text-xs text-gray-500">
+                            <p>Target Portals:</p>
+                            <span class="inline-block bg-gray-200 rounded-full px-2 py-0.5 mr-1">City23.ee</span>
+                            <span class="inline-block bg-gray-200 rounded-full px-2 py-0.5 mr-1">KV.ee</span>
+                            <span class="inline-block bg-gray-200 rounded-full px-2 py-0.5">OLX.ua</span>
+                        </div>
+                        <button onclick="navigateToSection('listing-publishing')" class="mt-4 text-sm text-sky-600 hover:text-sky-800 font-medium flex items-center">Go to Listing <i data-lucide="arrow-right" class="ml-1 h-4 w-4"></i></button>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition-shadow">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-4 flex items-center"><i data-lucide="users" class="mr-2 text-purple-500"></i> Buyer Inquiries</h3>
+                        <p class="text-2xl font-bold text-gray-800">3 <span class="text-base font-normal text-gray-600">New Leads</span></p>
+                        <p class="text-sm text-gray-500 mt-1">1 Follow-up due today</p>
+                        <button onclick="navigateToSection('crm')" class="mt-4 text-sm text-sky-600 hover:text-sky-800 font-medium flex items-center">Manage Leads <i data-lucide="arrow-right" class="ml-1 h-4 w-4"></i></button>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition-shadow">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-4 flex items-center"><i data-lucide="book-open" class="mr-2 text-teal-500"></i> Quick Resources</h3>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="#" onclick="navigateToSection('knowledge-base', 'staging-tips')" class="text-sky-600 hover:underline flex items-center"><i data-lucide="lightbulb" class="mr-2 h-4 w-4"></i> Staging Tips</a></li>
+                            <li><a href="#" onclick="navigateToSection('knowledge-base', 'photo-guide')" class="text-sky-600 hover:underline flex items-center"><i data-lucide="camera" class="mr-2 h-4 w-4"></i> Photography Guide</a></li>
+                            <li><a href="#" onclick="navigateToSection('notary-info')" class="text-sky-600 hover:underline flex items-center"><i data-lucide="file-text" class="mr-2 h-4 w-4"></i> Understanding Notary Role</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="property-evaluation" class="content-section">
+                <h2 class="text-3xl font-semibold text-gray-800 mb-2">Property Evaluation</h2>
+                <p class="text-gray-600 mb-6">Answer a few questions to get an estimated value for your property.</p>
+
+                <div class="bg-white p-8 rounded-lg shadow-md max-w-3xl mx-auto">
+                    <div class="flex justify-center items-center space-x-4 mb-8" id="evaluation-progress-dots">
+                        <div class="progress-dot active" data-step="1"></div>
+                        <div class="progress-dot" data-step="2"></div>
+                        <div class="progress-dot" data-step="3"></div>
+                        <div class="progress-dot" data-step="4"></div>
+                        <div class="progress-dot" data-step="5"></div>
+                    </div>
+
+                    <div id="evaluation-questions">
+                        <div class="evaluation-step active" data-step="1">
+                            <h3 class="text-xl font-semibold text-gray-700 mb-4">Property Basics</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="prop-type" class="block text-sm font-medium text-gray-700 mb-1">Property Type</label>
+                                    <select id="prop-type" class="w-full p-2 border border-gray-300 rounded-md focus:ring-sky-500 focus:border-sky-500">
+                                        <option>Apartment</option>
+                                        <option>House</option>
+                                        <option>Townhouse</option>
+                                        <option>Land</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="prop-address" class="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                                    <input type="text" id="prop-address" placeholder="e.g., Example St 10, Tallinn" class="w-full p-2 border border-gray-300 rounded-md focus:ring-sky-500 focus:border-sky-500">
+                                </div>
+                                <div>
+                                    <label for="prop-size" class="block text-sm font-medium text-gray-700 mb-1">Size (sq meters)</label>
+                                    <input type="number" id="prop-size" placeholder="e.g., 75" class="w-full p-2 border border-gray-300 rounded-md focus:ring-sky-500 focus:border-sky-500">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="evaluation-step" data-step="2" style="display: none;">
+                            <h3 class="text-xl font-semibold text-gray-700 mb-4">Rooms & Layout</h3>
+                             <div class="space-y-4">
+                                <div>
+                                    <label for="prop-bedrooms" class="block text-sm font-medium text-gray-700 mb-1">Number of Bedrooms</label>
+                                    <input type="number" id="prop-bedrooms" placeholder="e.g., 3" class="w-full p-2 border border-gray-300 rounded-md focus:ring-sky-500 focus:border-sky-500">
+                                </div>
+                                <div>
+                                    <label for="prop-bathrooms" class="block text-sm font-medium text-gray-700 mb-1">Number of Bathrooms</label>
+                                    <input type="number" id="prop-bathrooms" placeholder="e.g., 2" class="w-full p-2 border border-gray-300 rounded-md focus:ring-sky-500 focus:border-sky-500">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Balcony / Terrace?</label>
+                                    <div class="flex space-x-4">
+                                        <label class="inline-flex items-center"><input type="radio" name="balcony" value="yes" class="form-radio text-sky-600"> <span class="ml-2">Yes</span></label>
+                                        <label class="inline-flex items-center"><input type="radio" name="balcony" value="no" class="form-radio text-sky-600"> <span class="ml-2">No</span></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="evaluation-step" data-step="3" style="display: none;">
+                            <h3 class="text-xl font-semibold text-gray-700 mb-4">Condition & Year Built</h3>
+                             <div class="space-y-4">
+                                <div>
+                                    <label for="prop-year" class="block text-sm font-medium text-gray-700 mb-1">Year Built</label>
+                                    <input type="number" id="prop-year" placeholder="e.g., 1995" class="w-full p-2 border border-gray-300 rounded-md focus:ring-sky-500 focus:border-sky-500">
+                                </div>
+                                <div>
+                                    <label for="prop-condition" class="block text-sm font-medium text-gray-700 mb-1">Overall Condition</label>
+                                    <select id="prop-condition" class="w-full p-2 border border-gray-300 rounded-md focus:ring-sky-500 focus:border-sky-500">
+                                        <option>Excellent (Newly Renovated)</option>
+                                        <option>Good (Well-maintained)</option>
+                                        <option>Average (Needs some updates)</option>
+                                        <option>Fair (Requires significant work)</option>
+                                        <option>Poor (Needs full renovation)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="evaluation-step" data-step="4" style="display: none;">
+                            <h3 class="text-xl font-semibold text-gray-700 mb-4">Features & Amenities</h3>
+                             <div class="space-y-4">
+                                <label class="block text-sm font-medium text-gray-700">Select applicable features:</label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <label class="inline-flex items-center"><input type="checkbox" class="form-checkbox text-sky-600 rounded"> <span class="ml-2">Parking Space</span></label>
+                                    <label class="inline-flex items-center"><input type="checkbox" class="form-checkbox text-sky-600 rounded"> <span class="ml-2">Sauna</span></label>
+                                    <label class="inline-flex items-center"><input type="checkbox" class="form-checkbox text-sky-600 rounded"> <span class="ml-2">Fireplace</span></label>
+                                    <label class="inline-flex items-center"><input type="checkbox" class="form-checkbox text-sky-600 rounded"> <span class="ml-2">Storage Unit</span></label>
+                                    <label class="inline-flex items-center"><input type="checkbox" class="form-checkbox text-sky-600 rounded"> <span class="ml-2">Elevator in Building</span></label>
+                                    <label class="inline-flex items-center"><input type="checkbox" class="form-checkbox text-sky-600 rounded"> <span class="ml-2">Garden Access</span></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="evaluation-step text-center" data-step="5" style="display: none;">
+                            <h3 class="text-2xl font-semibold text-gray-700 mb-4">Estimated Value</h3>
+                             <div class="p-6 bg-gradient-to-r from-green-50 to-emerald-100 rounded-lg border border-green-200">
+                                <p class="text-4xl font-bold text-green-700 mb-2" id="evaluation-result-value">€ ---,--</p>
+                                <p class="text-sm text-gray-600">Based on the information provided and current market trends.</p>
+                             </div>
+                             <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-800">
+                                <h4 class="font-semibold mb-1 flex items-center"><i data-lucide="alert-triangle" class="mr-2 h-5 w-5 text-yellow-500"></i> Disclaimer</h4>
+                                This is an automated estimate and may not reflect the final selling price. Market conditions fluctuate, and unique property features can significantly impact value. We strongly recommend consulting with a certified real estate appraiser for a precise valuation.
+                             </div>
+                             <button onclick="navigateToSection('dashboard')" class="mt-6 bg-sky-600 hover:bg-sky-700 text-white font-medium py-2 px-6 rounded-md transition duration-150 ease-in-out flex items-center justify-center mx-auto">
+                                <i data-lucide="arrow-left" class="mr-2 h-5 w-5"></i> Back to Dashboard
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between mt-8" id="evaluation-navigation">
+                        <button id="eval-prev-btn" onclick="navigateEvaluation(-1)" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium py-2 px-4 rounded-md transition duration-150 ease-in-out flex items-center" disabled>
+                            <i data-lucide="arrow-left" class="mr-2 h-5 w-5"></i> Previous
+                        </button>
+                        <button id="eval-next-btn" onclick="navigateEvaluation(1)" class="bg-sky-600 hover:bg-sky-700 text-white font-medium py-2 px-4 rounded-md transition duration-150 ease-in-out flex items-center">
+                            Next <i data-lucide="arrow-right" class="ml-2 h-5 w-5"></i>
+                        </button>
+                         <button id="eval-finish-btn" onclick="finishEvaluation()" class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md transition duration-150 ease-in-out flex items-center" style="display: none;">
+                            <i data-lucide="check-circle" class="mr-2 h-5 w-5"></i> Get Estimate
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="initial-setup" class="content-section">
+                 <h2 class="text-3xl font-semibold text-gray-800 mb-6">How HomeFlow Works</h2>
+                 <div class="bg-white p-8 rounded-lg shadow-md space-y-8">
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-4">The Selling Journey</h3>
+                        <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 md:space-x-4">
+                            <div class="text-center p-4 border border-gray-200 rounded-lg flex-1 bg-sky-50">
+                                <i data-lucide="clipboard-list" class="h-10 w-10 text-sky-500 mx-auto mb-2"></i>
+                                <h4 class="font-semibold text-lg">1. Prepare</h4>
+                                <p class="text-sm text-gray-600">Evaluate, write descriptions, take photos, and stage your property.</p>
+                            </div>
+                             <div class="text-gray-300 hidden md:block"><i data-lucide="arrow-right" class="h-6 w-6"></i></div>
+                            <div class="text-center p-4 border border-gray-200 rounded-lg flex-1 bg-amber-50">
+                                <i data-lucide="megaphone" class="h-10 w-10 text-amber-500 mx-auto mb-2"></i>
+                                <h4 class="font-semibold text-lg">2. List</h4>
+                                <p class="text-sm text-gray-600">Review your details and publish your listing to major portals.</p>
+                            </div>
+                             <div class="text-gray-300 hidden md:block"><i data-lucide="arrow-right" class="h-6 w-6"></i></div>
+                            <div class="text-center p-4 border border-gray-200 rounded-lg flex-1 bg-green-50">
+                                <i data-lucide="handshake" class="h-10 w-10 text-green-500 mx-auto mb-2"></i>
+                                <h4 class="font-semibold text-lg">3. Sell</h4>
+                                <p class="text-sm text-gray-600">Manage inquiries, finalize with a notary, and complete the handover.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-4">Your Goals</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="setup-timeframe" class="block text-sm font-medium text-gray-700 mb-1">Desired Selling Timeframe</label>
+                                <select id="setup-timeframe" class="w-full p-2 border border-gray-300 rounded-md focus:ring-sky-500 focus:border-sky-500">
+                                    <option>ASAP</option>
+                                    <option>Within 3 months</option>
+                                    <option>Within 6 months</option>
+                                    <option>Flexible</option>
+                                </select>
+                            </div>
+                             <div>
+                                <label for="setup-min-price" class="block text-sm font-medium text-gray-700 mb-1">Minimum Acceptable Price (Optional)</label>
+                                <input type="number" id="setup-min-price" placeholder="e.g., 240000" class="w-full p-2 border border-gray-300 rounded-md focus:ring-sky-500 focus:border-sky-500">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center p-4 bg-indigo-50 border border-indigo-200 rounded-lg">
+                        <i data-lucide="trending-up" class="h-8 w-8 text-indigo-500 mr-4"></i>
+                        <div>
+                            <h4 class="font-semibold text-indigo-800">Current Market Status (Simulated)</h4>
+                            <p class="text-sm text-indigo-700">Demand is currently <span class="font-bold">Moderate</span>. Average time on market is <span class="font-bold">45 days</span>.</p>
+                        </div>
+                    </div>
+
+                     <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-800">
+                        <h4 class="font-semibold mb-1 flex items-center"><i data-lucide="alert-triangle" class="mr-2 h-5 w-5 text-yellow-500"></i> Important Notes</h4>
+                        <ul class="list-disc list-inside space-y-1">
+                            <li>HomeFlow provides guidance and tools but does not replace professional legal or real estate advice.</li>
+                            <li>Automated listing is subject to the terms and availability of third-party portals.</li>
+                            <li>All legal documents should be reviewed by a qualified notary or lawyer.</li>
+                        </ul>
+                    </div>
+
+                     <div class="text-right">
+                         <button onclick="navigateToSection('property-preparation')" class="bg-sky-600 hover:bg-sky-700 text-white font-medium py-2 px-5 rounded-md transition duration-150 ease-in-out flex items-center ml-auto">
+                            Start Preparation <i data-lucide="arrow-right" class="ml-2 h-5 w-5"></i>
+                        </button>
+                    </div>
+                 </div>
+            </section>
+
+            <section id="property-preparation" class="content-section">
+                 <h2 class="text-3xl font-semibold text-gray-800 mb-6">Property Preparation</h2>
+                 <div class="space-y-8">
+                    <div class="bg-white p-8 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold text-gray-700 mb-4 flex items-center"><i data-lucide="file-pen-line" class="mr-2 text-sky-500"></i> Ad Text Generation (AI Assisted)</h3>
+                        <p class="text-sm text-gray-600 mb-4">Provide some key highlights, and our AI will help craft a compelling description. You can then review and edit.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="ad-highlights" class="block text-sm font-medium text-gray-700 mb-1">Key Highlights (Keywords)</label>
+                                <textarea id="ad-highlights" rows="4" placeholder="e.g., sunny balcony, quiet street, recently renovated kitchen, near park, good transport links" class="w-full p-2 border border-gray-300 rounded-md focus:ring-sky-500 focus:border-sky-500"></textarea>
+                                <button onclick="generateAdText()" class="mt-2 bg-sky-600 hover:bg-sky-700 text-white text-sm font-medium py-2 px-4 rounded-md transition duration-150 ease-in-out flex items-center">
+                                    <i data-lucide="sparkles" class="mr-2 h-4 w-4"></i> Generate Text
+                                </button>
+                            </div>
+                            <div>
+                                <label for="ad-generated-text" class="block text-sm font-medium text-gray-700 mb-1">Generated Description (Editable)</label>
+                                <textarea id="ad-generated-text" rows="6" placeholder="AI-generated text will appear here..." class="w-full p-2 border border-gray-300 rounded-md bg-gray-50 focus:ring-sky-500 focus:border-sky-500"></textarea>
+                                <div class="flex justify-between items-center mt-2">
+                                    <button class="text-sm text-green-600 hover:text-green-800 font-medium flex items-center"><i data-lucide="save" class="mr-1 h-4 w-4"></i> Save Text</button>
+                                    <div class="relative">
+                                         <button class="text-sm text-gray-600 hover:text-gray-800 font-medium flex items-center"><i data-lucide="languages" class="mr-1 h-4 w-4"></i> Translate (Simulated)</button>
+                                         </div>
+                                </div>
+                            </div>
+                        </div>
+                         <div id="ai-loading-indicator" class="mt-4 text-sm text-gray-500 items-center" style="display: none;">
+                            <i data-lucide="loader" class="animate-spin mr-2 h-4 w-4 inline-block"></i> Generating description...
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold text-gray-700 mb-4 flex items-center"><i data-lucide="camera" class="mr-2 text-amber-500"></i> Photography</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <h4 class="font-semibold text-gray-600 mb-2">Upload Your Photos</h4>
+                                <p class="text-sm text-gray-500 mb-3">Upload high-quality photos of your property. Drag & drop or click to select.</p>
+                                <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-sky-500 bg-gray-50">
+                                    <input type="file" id="photo-upload-input" multiple class="hidden" onchange="handlePhotoUpload(event)">
+                                    <label for="photo-upload-input" class="cursor-pointer">
+                                        <i data-lucide="upload-cloud" class="h-10 w-10 text-gray-400 mx-auto mb-2"></i>
+                                        <p class="text-sm text-gray-600">Click or drag files here</p>
+                                    </label>
+                                </div>
+                                <div id="photo-gallery-preview" class="mt-4 grid grid-cols-3 gap-2">
+                                    </div>
+                            </div>
+                             <div>
+                                <h4 class="font-semibold text-gray-600 mb-2">Need Help?</h4>
+                                <ul class="space-y-2 text-sm">
+                                    <li><a href="#" onclick="navigateToSection('knowledge-base', 'photo-guide')" class="text-sky-600 hover:underline flex items-center"><i data-lucide="book-open" class="mr-2 h-4 w-4"></i> Read our DIY Photography Guide</a></li>
+                                    <li>
+                                        <button class="text-sky-600 hover:underline flex items-center"><i data-lucide="users" class="mr-2 h-4 w-4"></i> Hire a Vetted Professional (Simulated)</button>
+                                        <p class="text-xs text-gray-500 mt-1">Browse local photographers we recommend.</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold text-gray-700 mb-4 flex items-center"><i data-lucide="check-square" class="mr-2 text-green-500"></i> Staging & Readiness Checklist</h3>
+                        <p class="text-sm text-gray-600 mb-4">Prepare your property to impress potential buyers. Check off items as you complete them.</p>
+                         <div class="space-y-3" id="staging-checklist">
+                            <label class="flex items-center p-3 border rounded-md hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" class="form-checkbox h-5 w-5 text-sky-600 rounded mr-3 focus:ring-sky-500">
+                                <span class="text-gray-700 flex-1">Declutter all rooms and surfaces</span>
+                                <a href="#" onclick="navigateToSection('knowledge-base', 'declutter-guide')" class="text-xs text-sky-500 hover:underline ml-2"><i data-lucide="help-circle" class="h-4 w-4"></i> Guide</a>
+                            </label>
+                             <label class="flex items-center p-3 border rounded-md hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" class="form-checkbox h-5 w-5 text-sky-600 rounded mr-3 focus:ring-sky-500">
+                                <span class="text-gray-700 flex-1">Deep clean entire property (floors, windows, bathrooms, kitchen)</span>
+                                 <a href="#" onclick="navigateToSection('knowledge-base', 'cleaning-tips')" class="text-xs text-sky-500 hover:underline ml-2"><i data-lucide="help-circle" class="h-4 w-4"></i> Guide</a>
+                            </label>
+                             <label class="flex items-center p-3 border rounded-md hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" class="form-checkbox h-5 w-5 text-sky-600 rounded mr-3 focus:ring-sky-500">
+                                <span class="text-gray-700 flex-1">Make necessary minor repairs (leaky faucets, paint touch-ups)</span>
+                                 <a href="#" onclick="navigateToSection('knowledge-base', 'repairs-guide')" class="text-xs text-sky-500 hover:underline ml-2"><i data-lucide="help-circle" class="h-4 w-4"></i> Guide</a>
+                            </label>
+                             <label class="flex items-center p-3 border rounded-md hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" class="form-checkbox h-5 w-5 text-sky-600 rounded mr-3 focus:ring-sky-500">
+                                <span class="text-gray-700 flex-1">Stage key areas (living room, master bedroom, kitchen)</span>
+                                 <a href="#" onclick="navigateToSection('knowledge-base', 'staging-tips')" class="text-xs text-sky-500 hover:underline ml-2"><i data-lucide="help-circle" class="h-4 w-4"></i> Guide</a>
+                            </label>
+                             <label class="flex items-center p-3 border rounded-md hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" class="form-checkbox h-5 w-5 text-sky-600 rounded mr-3 focus:ring-sky-500">
+                                <span class="text-gray-700 flex-1">Enhance curb appeal (tidy entrance, clean windows/door)</span>
+                            </label>
+                        </div>
+                         <p class="text-xs text-gray-500 mt-4">Note: This staging step is recommended but optional.</p>
+                         <div class="text-right mt-6">
+                             <button onclick="navigateToSection('listing-publishing')" class="bg-sky-600 hover:bg-sky-700 text-white font-medium py-2 px-5 rounded-md transition duration-150 ease-in-out flex items-center ml-auto">
+                                Proceed to Listing <i data-lucide="arrow-right" class="ml-2 h-5 w-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                 </div>
+            </section>
+
+             <section id="listing-publishing" class="content-section">
+                 <h2 class="text-3xl font-semibold text-gray-800 mb-6">Review & Publish Listing</h2>
+                 <div class="bg-white p-8 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-4">Final Review</h3>
+                    <p class="text-sm text-gray-600 mb-6">Please review all the information carefully before publishing. You can click 'Edit' to go back and make changes.</p>
+
+                    <div class="space-y-6 border border-gray-200 rounded-lg p-6">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="font-semibold text-lg text-gray-800 flex items-center"><i data-lucide="home" class="mr-2 text-sky-500"></i> Property Details</h4>
+                                <p class="text-sm text-gray-600 mt-1">Address: Example St 10, Tallinn</p>
+                                <p class="text-sm text-gray-600">Type: Apartment, Size: 75 sqm</p>
+                                <p class="text-sm text-gray-600">Rooms: 3 Bed, 2 Bath</p>
+                                <p class="text-sm text-gray-600">Condition: Good</p>
+                            </div>
+                            <button onclick="navigateToSection('property-evaluation')" class="text-sm text-sky-600 hover:text-sky-800 font-medium flex items-center"><i data-lucide="edit-3" class="mr-1 h-4 w-4"></i> Edit</button>
+                        </div>
+                        <hr>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="font-semibold text-lg text-gray-800 flex items-center"><i data-lucide="file-pen-line" class="mr-2 text-amber-500"></i> Ad Description</h4>
+                                <p class="text-sm text-gray-600 mt-1 italic line-clamp-3" id="listing-ad-text-preview">"Discover this bright and spacious 3-bedroom apartment located on a quiet street, yet close to essential amenities. Featuring a sunny balcony perfect for morning coffee, a recently updated kitchen..."</p>
+                            </div>
+                            <button onclick="navigateToSection('property-preparation')" class="text-sm text-sky-600 hover:text-sky-800 font-medium flex items-center"><i data-lucide="edit-3" class="mr-1 h-4 w-4"></i> Edit</button>
+                        </div>
+                        <hr>
+                         <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="font-semibold text-lg text-gray-800 flex items-center"><i data-lucide="camera" class="mr-2 text-green-500"></i> Photos</h4>
+                                <div class="mt-2 flex space-x-2" id="listing-photo-preview">
+                                    <img src="https://placehold.co/80x60/e2e8f0/94a3b8?text=Img+1" alt="Photo 1" class="h-16 w-20 object-cover rounded">
+                                    <img src="https://placehold.co/80x60/e2e8f0/94a3b8?text=Img+2" alt="Photo 2" class="h-16 w-20 object-cover rounded">
+                                    <img src="https://placehold.co/80x60/e2e8f0/94a3b8?text=Img+3" alt="Photo 3" class="h-16 w-20 object-cover rounded">
+                                    <div class="h-16 w-20 bg-gray-100 rounded flex items-center justify-center text-gray-500 text-xs">+2 more</div>
+                                </div>
+                            </div>
+                            <button onclick="navigateToSection('property-preparation')" class="text-sm text-sky-600 hover:text-sky-800 font-medium flex items-center"><i data-lucide="edit-3" class="mr-1 h-4 w-4"></i> Edit</button>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 text-center">
+                         <button id="publish-button" onclick="publishListing()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg transition duration-150 ease-in-out flex items-center justify-center mx-auto text-lg shadow-md hover:shadow-lg">
+                            <i data-lucide="send" class="mr-2 h-5 w-5"></i> Publish Listing Now
+                        </button>
+                    </div>
+
+                    <div id="publishing-status" class="mt-8 space-y-4" style="display: none;">
+                         <h3 class="text-xl font-semibold text-gray-700 text-center">Publishing Status</h3>
+                         <div class="p-4 bg-gray-50 rounded-lg border">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-medium text-gray-700">City23.ee</span>
+                                <span class="text-sm font-medium text-yellow-600 flex items-center" id="status-city23"><i data-lucide="loader" class="mr-1 h-4 w-4 animate-spin"></i> Publishing...</span>
+                            </div>
+                             <div class="w-full bg-gray-200 rounded-full h-1.5">
+                                <div class="bg-yellow-500 h-1.5 rounded-full" id="progress-city23" style="width: 20%;"></div>
+                            </div>
+                         </div>
+                         <div class="p-4 bg-gray-50 rounded-lg border">
+                             <div class="flex justify-between items-center mb-2">
+                                <span class="font-medium text-gray-700">KV.ee</span>
+                                <span class="text-sm font-medium text-gray-500 flex items-center" id="status-kv"><i data-lucide="circle-dashed" class="mr-1 h-4 w-4"></i> Pending</span>
+                            </div>
+                             <div class="w-full bg-gray-200 rounded-full h-1.5">
+                                <div class="bg-gray-400 h-1.5 rounded-full" id="progress-kv" style="width: 0%;"></div>
+                            </div>
+                         </div>
+                         <div class="p-4 bg-gray-50 rounded-lg border">
+                             <div class="flex justify-between items-center mb-2">
+                                <span class="font-medium text-gray-700">OLX.ua</span>
+                                <span class="text-sm font-medium text-gray-500 flex items-center" id="status-olx"><i data-lucide="circle-dashed" class="mr-1 h-4 w-4"></i> Pending</span>
+                            </div>
+                             <div class="w-full bg-gray-200 rounded-full h-1.5">
+                                <div class="bg-gray-400 h-1.5 rounded-full" id="progress-olx" style="width: 0%;"></div>
+                            </div>
+                         </div>
+                         <div id="publish-complete-message" class="mt-6 text-center text-green-700 font-semibold" style="display: none;">
+                            <i data-lucide="check-circle" class="h-6 w-6 inline-block mr-2"></i> All listings published successfully!
+                             <button onclick="navigateToSection('dashboard')" class="mt-4 block mx-auto text-sm text-sky-600 hover:text-sky-800 font-medium">Return to Dashboard</button>
+                         </div>
+                    </div>
+                 </div>
+            </section>
+
+            <section id="notary-info" class="content-section">
+                 <h2 class="text-3xl font-semibold text-gray-800 mb-6">Notary Information & Services (Estonia)</h2>
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                     <div class="bg-white p-8 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold text-gray-700 mb-4 flex items-center"><i data-lucide="scale" class="mr-2 text-indigo-500"></i> The Role of a Notary in Estonia</h3>
+                        <p class="text-sm text-gray-600 mb-4">In Estonia, a notary plays a crucial, impartial role in property transactions. Their key responsibilities include:</p>
+                        <ul class="list-disc list-inside space-y-2 text-sm text-gray-700">
+                            <li>Verifying the identities of the buyer and seller.</li>
+                            <li>Checking the legal status of the property in the Land Register.</li>
+                            <li>Ensuring both parties understand the terms of the sale agreement.</li>
+                            <li>Drafting and formalizing the official purchase agreement (notarial deed).</li>
+                            <li>Overseeing the secure transfer of funds (often via a notary deposit account).</li>
+                            <li>Submitting the application to the Land Register to transfer ownership.</li>
+                        </ul>
+                        <p class="text-sm text-gray-600 mt-4">Using a notary is legally required for property sales in Estonia to ensure validity and security.</p>
+                    </div>
+
+                     <div class="space-y-8">
+                        <div class="bg-white p-8 rounded-lg shadow-md">
+                            <h3 class="text-xl font-semibold text-gray-700 mb-4 flex items-center"><i data-lucide="folder-open" class="mr-2 text-teal-500"></i> Resources & Templates</h3>
+                            <ul class="space-y-2 text-sm">
+                                <li><a href="#" class="text-sky-600 hover:underline flex items-center"><i data-lucide="file-text" class="mr-2 h-4 w-4"></i> Sample Purchase Agreement Checklist (PDF)</a></li>
+                                <li><a href="#" class="text-sky-600 hover:underline flex items-center"><i data-lucide="list-checks" class="mr-2 h-4 w-4"></i> Document Checklist for Seller (PDF)</a></li>
+                                <li><a href="https://www.notar.ee/en/booking" target="_blank" rel="noopener noreferrer" class="text-sky-600 hover:underline flex items-center"><i data-lucide="calendar-plus" class="mr-2 h-4 w-4"></i> Online Notary Booking (Official Link)</a></li>
+                             </ul>
+                        </div>
+
+                        <div class="bg-white p-8 rounded-lg shadow-md">
+                            <h3 class="text-xl font-semibold text-gray-700 mb-4 flex items-center"><i data-lucide="users-round" class="mr-2 text-purple-500"></i> Vetted Notaries (Simulated List)</h3>
+                             <ul class="space-y-3">
+                                <li class="flex justify-between items-center border-b pb-2">
+                                    <div>
+                                        <p class="font-medium text-gray-800">Notary Office Tamm & Partnerid</p>
+                                        <p class="text-sm text-gray-500">Tallinn Center | +372 612 3456</p>
+                                    </div>
+                                    <a href="#" class="text-xs bg-sky-100 text-sky-700 px-2 py-1 rounded hover:bg-sky-200">Contact</a>
+                                </li>
+                                 <li class="flex justify-between items-center border-b pb-2">
+                                    <div>
+                                        <p class="font-medium text-gray-800">Notaribüroo Kask & Järv</p>
+                                        <p class="text-sm text-gray-500">Tartu | +372 712 3456</p>
+                                    </div>
+                                     <a href="#" class="text-xs bg-sky-100 text-sky-700 px-2 py-1 rounded hover:bg-sky-200">Contact</a>
+                                </li>
+                                 <li class="flex justify-between items-center">
+                                    <div>
+                                        <p class="font-medium text-gray-800">Pärnu Notar Anne Saaber</p>
+                                        <p class="text-sm text-gray-500">Pärnu | +372 412 3456</p>
+                                    </div>
+                                     <a href="#" class="text-xs bg-sky-100 text-sky-700 px-2 py-1 rounded hover:bg-sky-200">Contact</a>
+                                </li>
+                             </ul>
+                        </div>
+                    </div>
+                 </div>
+            </section>
+
+             <section id="after-sale" class="content-section">
+                 <h2 class="text-3xl font-semibold text-gray-800 mb-6">After Sale Guidance</h2>
+                 <div class="bg-white p-8 rounded-lg shadow-md space-y-8">
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-4 flex items-center"><i data-lucide="move" class="mr-2 text-blue-500"></i> Moving Out Tips</h3>
+                         <ul class="list-disc list-inside space-y-2 text-sm text-gray-700">
+                            <li>Plan your move well in advance. Book movers or arrange transport.</li>
+                            <li>Start packing non-essential items early. Label boxes clearly.</li>
+                            <li>Notify relevant parties of your change of address (banks, subscriptions, government agencies).</li>
+                            <li>Arrange for final meter readings for utilities (electricity, water, gas).</li>
+                            <li>Ensure the property is clean and empty as agreed upon in the sales contract.</li>
+                            <li>Coordinate key handover with the buyer or their representative.</li>
+                        </ul>
+                    </div>
+                    <hr>
+                     <div>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-4 flex items-center"><i data-lucide="file-signature" class="mr-2 text-green-500"></i> Property Transfer Agreement</h3>
+                        <p class="text-sm text-gray-600 mb-4">The formal transfer of ownership is handled by the notary and recorded in the Land Register. However, a separate handover protocol (üleandmise-vastuvõtmise akt) is highly recommended. This document confirms:</p>
+                         <ul class="list-disc list-inside space-y-2 text-sm text-gray-700">
+                            <li>The date and time of physical handover of the property.</li>
+                            <li>The condition of the property at the time of handover.</li>
+                            <li>Meter readings (electricity, water, etc.).</li>
+                            <li>The transfer of keys, documents, and any included appliances/fixtures.</li>
+                            <li>Both buyer and seller should sign this document.</li>
+                        </ul>
+                         <a href="#" class="text-sky-600 hover:underline text-sm flex items-center mt-3"><i data-lucide="download" class="mr-2 h-4 w-4"></i> Download Handover Protocol Template (Word)</a>
+                    </div>
+                    <hr>
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-4 flex items-center"><i data-lucide="clipboard-list" class="mr-2 text-orange-500"></i> Final Checklist</h3>
+                         <ul class="list-disc list-inside space-y-2 text-sm text-gray-700">
+                            <li>Cancel or transfer utility contracts (electricity, water, internet, TV).</li>
+                            <li>Update your official residence registration if required.</li>
+                            <li>Forward your mail if necessary.</li>
+                            <li>Securely transfer or delete any personal data related to the property (e.g., smart home devices).</li>
+                            <li>Keep copies of all sales documents, notary deeds, and handover protocols for your records.</li>
+                        </ul>
+                    </div>
+                 </div>
+            </section>
+
+            <section id="crm" class="content-section">
+                 <h2 class="text-3xl font-semibold text-gray-800 mb-6">CRM - Manage Buyer Inquiries</h2>
+                <div class="flex justify-between items-center mb-6">
+                    <div class="flex space-x-2">
+                         <button class="bg-white text-gray-700 px-4 py-2 rounded-md shadow-sm border border-gray-300 hover:bg-gray-50 text-sm font-medium flex items-center"><i data-lucide="filter" class="mr-2 h-4 w-4"></i> Filter</button>
+                         <button class="bg-white text-gray-700 px-4 py-2 rounded-md shadow-sm border border-gray-300 hover:bg-gray-50 text-sm font-medium flex items-center"><i data-lucide="arrow-up-down" class="mr-2 h-4 w-4"></i> Sort</button>
+                    </div>
+                    <button onclick="showAddContactModal()" class="bg-sky-600 hover:bg-sky-700 text-white font-medium py-2 px-4 rounded-md transition duration-150 ease-in-out flex items-center text-sm">
+                        <i data-lucide="plus-circle" class="mr-2 h-5 w-5"></i> Add Contact
+                    </button>
+                </div>
+
+                 <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <table class="w-full table-auto">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact Info</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date Added</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Interest Level</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200" id="crm-contact-list">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Anna Schmidt</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">anna.s@email.com | +372 555 1111</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2025-04-10</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">High</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Viewing Scheduled</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                                    <button class="text-indigo-600 hover:text-indigo-900"><i data-lucide="sticky-note" class="h-4 w-4"></i></button>
+                                    <button class="text-yellow-600 hover:text-yellow-900"><i data-lucide="clock" class="h-4 w-4"></i></button>
+                                    <button class="text-red-600 hover:text-red-900"><i data-lucide="trash-2" class="h-4 w-4"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Markus Tamm</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">markus.t@email.com | +372 555 2222</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2025-04-11</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Medium</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Follow-up Needed</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                                    <button class="text-indigo-600 hover:text-indigo-900"><i data-lucide="sticky-note" class="h-4 w-4"></i></button>
+                                    <button class="text-yellow-600 hover:text-yellow-900"><i data-lucide="clock" class="h-4 w-4"></i></button>
+                                    <button class="text-red-600 hover:text-red-900"><i data-lucide="trash-2" class="h-4 w-4"></i></button>
+                                </td>
+                            </tr>
+                             <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Liisa Koppel</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">liisa.k@email.com</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2025-04-12</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Low</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">Initial Inquiry</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                                    <button class="text-indigo-600 hover:text-indigo-900"><i data-lucide="sticky-note" class="h-4 w-4"></i></button>
+                                    <button class="text-yellow-600 hover:text-yellow-900"><i data-lucide="clock" class="h-4 w-4"></i></button>
+                                    <button class="text-red-600 hover:text-red-900"><i data-lucide="trash-2" class="h-4 w-4"></i></button>
+                                </td>
+                            </tr>
+                            </tbody>
+                    </table>
+                 </div>
+
+                 <div class="mt-8 p-6 bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-100 rounded-lg shadow-sm">
+                    <h4 class="font-semibold text-indigo-800 mb-2 flex items-center"><i data-lucide="lightbulb" class="mr-2 h-5 w-5 text-indigo-500"></i> CRM & Market Tips</h4>
+                    <ul class="list-disc list-inside space-y-1 text-sm text-indigo-700">
+                        <li>Respond to new inquiries promptly (ideally within 24 hours).</li>
+                        <li>Keep detailed notes of conversations and buyer preferences.</li>
+                        <li>Set follow-up reminders to stay organized.</li>
+                        <li><a href="#" onclick="navigateToSection('knowledge-base', 'negotiation-tips')" class="font-medium hover:underline">Learn about negotiation strategies</a></li>
+                    </ul>
+                 </div>
+
+                 <div id="add-contact-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center" style="display: none; z-index: 50;">
+                    <div class="relative mx-auto p-8 border w-full max-w-md shadow-lg rounded-md bg-white">
+                        <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Add New Contact</h3>
+                        <form id="add-contact-form" class="space-y-4">
+                            <div>
+                                <label for="contact-name" class="block text-sm font-medium text-gray-700">Name</label>
+                                <input type="text" id="contact-name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                            </div>
+                             <div>
+                                <label for="contact-email" class="block text-sm font-medium text-gray-700">Email</label>
+                                <input type="email" id="contact-email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                            </div>
+                             <div>
+                                <label for="contact-phone" class="block text-sm font-medium text-gray-700">Phone</label>
+                                <input type="tel" id="contact-phone" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                            </div>
+                             <div>
+                                <label for="contact-interest" class="block text-sm font-medium text-gray-700">Interest Level</label>
+                                <select id="contact-interest" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                                    <option>High</option>
+                                    <option selected>Medium</option>
+                                    <option>Low</option>
+                                    <option>Unknown</option>
+                                </select>
+                            </div>
+                             <div>
+                                <label for="contact-status" class="block text-sm font-medium text-gray-700">Status</label>
+                                <select id="contact-status" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                                    <option selected>Initial Inquiry</option>
+                                    <option>Contacted</option>
+                                    <option>Viewing Scheduled</option>
+                                    <option>Offer Made</option>
+                                    <option>Follow-up Needed</option>
+                                    <option>Not Interested</option>
+                                </select>
+                            </div>
+                             <div class="mt-6 flex justify-end space-x-3">
+                                <button type="button" onclick="hideAddContactModal()" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">Cancel</button>
+                                <button type="submit" class="px-4 py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700">Add Contact</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </section>
+
+            <section id="knowledge-base" class="content-section">
+                 <h2 class="text-3xl font-semibold text-gray-800 mb-6">Knowledge Base</h2>
+                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                     <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition-shadow">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-3 flex items-center"><i data-lucide="brush" class="mr-2 text-sky-500"></i> Property Preparation</h3>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="#kb-article-staging" class="text-sky-600 hover:underline block kb-link">Effective Home Staging Tips</a></li>
+                            <li><a href="#kb-article-declutter" class="text-sky-600 hover:underline block kb-link">Decluttering Guide for Sellers</a></li>
+                            <li><a href="#kb-article-repairs" class="text-sky-600 hover:underline block kb-link">Prioritizing Minor Repairs</a></li>
+                            <li><a href="#kb-article-cleaning" class="text-sky-600 hover:underline block kb-link">Pre-Sale Cleaning Checklist</a></li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition-shadow">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-3 flex items-center"><i data-lucide="camera" class="mr-2 text-amber-500"></i> Photography & Listing</h3>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="#kb-article-photo-guide" class="text-sky-600 hover:underline block kb-link">DIY Property Photography Guide</a></li>
+                            <li><a href="#kb-article-writing-ads" class="text-sky-600 hover:underline block kb-link">Writing Compelling Ad Descriptions</a></li>
+                            <li><a href="#kb-article-portals" class="text-sky-600 hover:underline block kb-link">Understanding Online Property Portals</a></li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition-shadow">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-3 flex items-center"><i data-lucide="scale" class="mr-2 text-indigo-500"></i> Legal & Financial</h3>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="#kb-article-notary-role" class="text-sky-600 hover:underline block kb-link">The Notary's Role Explained (Estonia)</a></li>
+                            <li><a href="#kb-article-costs" class="text-sky-600 hover:underline block kb-link">Understanding Selling Costs</a></li>
+                            <li><a href="#kb-article-agreement" class="text-sky-600 hover:underline block kb-link">Key Elements of a Purchase Agreement</a></li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition-shadow">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-3 flex items-center"><i data-lucide="users" class="mr-2 text-purple-500"></i> Showings & Negotiation</h3>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="#kb-article-showings" class="text-sky-600 hover:underline block kb-link">Preparing for Property Viewings</a></li>
+                            <li><a href="#kb-article-negotiation" class="text-sky-600 hover:underline block kb-link">Negotiation Strategies for Sellers</a></li>
+                            <li><a href="#kb-article-offers" class="text-sky-600 hover:underline block kb-link">Handling Multiple Offers</a></li>
+                        </ul>
+                    </div>
+                     <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition-shadow">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-3 flex items-center"><i data-lucide="package-check" class="mr-2 text-green-500"></i> After Sale Process</h3>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="#kb-article-handover" class="text-sky-600 hover:underline block kb-link">The Property Handover Process</a></li>
+                            <li><a href="#kb-article-utilities" class="text-sky-600 hover:underline block kb-link">Managing Utilities Transfer</a></li>
+                            <li><a href="#kb-article-moving" class="text-sky-600 hover:underline block kb-link">Moving Out Checklist</a></li>
+                        </ul>
+                    </div>
+                 </div>
+
+                 <div id="kb-article-display" class="mt-8 bg-white p-8 rounded-lg shadow-md" style="display: none;">
+                     <button onclick="hideKbArticle()" class="text-sm text-gray-500 hover:text-gray-700 mb-4 flex items-center"><i data-lucide="arrow-left" class="mr-1 h-4 w-4"></i> Back to Topics</button>
+                     <h3 id="kb-article-title" class="text-2xl font-semibold text-gray-800 mb-4">Article Title</h3>
+                     <div id="kb-article-content" class="prose max-w-none text-gray-700">
+                         Article content will load here...
+                     </div>
+                 </div>
+
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        // --- State Variables ---
+        let currentEvaluationStep = 1;
+        const totalEvaluationSteps = 5;
+        const platformState = {
+            evaluationComplete: false,
+            estimatedValue: null,
+            adText: "",
+            photos: [],
+            stagingChecklist: {}, // { item_id: boolean }
+            listingPublished: false,
+            publishStatus: { city23: 'pending', kv: 'pending', olx: 'pending' },
+            crmContacts: [ // Sample initial data
+                { id: 1, name: 'Anna Schmidt', email: 'anna.s@email.com', phone: '+372 555 1111', dateAdded: '2025-04-10', interest: 'High', status: 'Viewing Scheduled', notes: '' },
+                { id: 2, name: 'Markus Tamm', email: 'markus.t@email.com', phone: '+372 555 2222', dateAdded: '2025-04-11', interest: 'Medium', status: 'Follow-up Needed', notes: '' },
+                { id: 3, name: 'Liisa Koppel', email: 'liisa.k@email.com', phone: '', dateAdded: '2025-04-12', interest: 'Low', status: 'Initial Inquiry', notes: '' },
+            ]
+        };
+
+        // --- DOM Elements ---
+        const sidebarLinks = document.querySelectorAll('.sidebar-link');
+        const contentSections = document.querySelectorAll('.content-section');
+        const mainContent = document.getElementById('main-content');
+        const evalPrevBtn = document.getElementById('eval-prev-btn');
+        const evalNextBtn = document.getElementById('eval-next-btn');
+        const evalFinishBtn = document.getElementById('eval-finish-btn');
+        const evalProgressDots = document.querySelectorAll('#evaluation-progress-dots .progress-dot');
+        const evalSteps = document.querySelectorAll('.evaluation-step');
+        const evalNavigation = document.getElementById('evaluation-navigation');
+        const evalResultValue = document.getElementById('evaluation-result-value');
+        const dashboardEvalResult = document.getElementById('dashboard-evaluation-result');
+        const photoUploadInput = document.getElementById('photo-upload-input');
+        const photoGalleryPreview = document.getElementById('photo-gallery-preview');
+        const listingPhotoPreview = document.getElementById('listing-photo-preview');
+        const adHighlightsInput = document.getElementById('ad-highlights');
+        const adGeneratedTextInput = document.getElementById('ad-generated-text');
+        const listingAdTextPreview = document.getElementById('listing-ad-text-preview');
+        const aiLoadingIndicator = document.getElementById('ai-loading-indicator');
+        const publishButton = document.getElementById('publish-button');
+        const publishingStatusDiv = document.getElementById('publishing-status');
+        const publishCompleteMessage = document.getElementById('publish-complete-message');
+        const crmContactList = document.getElementById('crm-contact-list');
+        const addContactModal = document.getElementById('add-contact-modal');
+        const addContactForm = document.getElementById('add-contact-form');
+        const kbLinks = document.querySelectorAll('.kb-link');
+        const kbArticleDisplay = document.getElementById('kb-article-display');
+        const kbArticleTitle = document.getElementById('kb-article-title');
+        const kbArticleContent = document.getElementById('kb-article-content');
+
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons(); // Initialize Lucide icons
+            renderCrmList(); // Initial render of CRM contacts
+
+            // Set initial active section based on hash or default to dashboard
+            const initialSectionId = window.location.hash.substring(1) || 'dashboard';
+            // Directly show the initial section WITHOUT relying on hashchange for load
+            showSection(initialSectionId);
+            // Set the hash, but don't rely on its change event for initial load
+            if (window.location.hash !== `#${initialSectionId}`) {
+                 window.location.hash = initialSectionId;
+            }
+
+
+             // Add event listener for hash changes (browser back/forward)
+            window.addEventListener('hashchange', () => {
+                const sectionId = window.location.hash.substring(1);
+                // Only call showSection if the hashchange wasn't triggered by our own navigateToSection
+                // This prevents potential double-calls but ensures back/forward works.
+                 const currentActive = document.querySelector('.content-section.active');
+                 if (!currentActive || currentActive.id !== sectionId) {
+                     showSection(sectionId || 'dashboard');
+                 }
+            });
+
+            // Add submit listener for Add Contact form
+             addContactForm.addEventListener('submit', handleAddContact);
+        });
+
+        // --- Navigation ---
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault(); // Prevent default anchor behavior
+                const sectionId = link.getAttribute('data-section');
+                navigateToSection(sectionId); // Use our function
+            });
+        });
+
+        function navigateToSection(sectionId, subSection = null) {
+             const currentHash = window.location.hash.substring(1);
+
+             // Directly show the section
+             showSection(sectionId);
+
+             // Update URL hash only if it's different, prevents adding duplicate history entries
+             if (currentHash !== sectionId) {
+                 window.location.hash = sectionId;
+             }
+
+            // Handle knowledge base sub-navigation AFTER showing the main section
+            if (sectionId === 'knowledge-base' && subSection) {
+                // Construct the full article ID hash
+                const articleHash = `#kb-article-${subSection}`;
+                const targetArticleLink = document.querySelector(`a[href="${articleHash}"]`);
+                if (targetArticleLink) {
+                    displayKbArticle(articleHash);
+                }
+            } else if (sectionId !== 'knowledge-base') {
+                 hideKbArticle(); // Hide article display when navigating away from KB
+            }
+        }
+
+        function showSection(sectionId) {
+             // Ensure sectionId is valid, default to 'dashboard' if not
+             const targetSectionId = document.getElementById(sectionId) ? sectionId : 'dashboard';
+
+            // Hide all sections first
+            contentSections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show the target section
+            const activeSection = document.getElementById(targetSectionId);
+            if (activeSection) {
+                activeSection.classList.add('active');
+                 // Scroll to top of the main content area for the new section
+                mainContent.scrollTop = 0;
+            }
+
+            // Update active state in sidebar
+            sidebarLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-section') === targetSectionId) {
+                    link.classList.add('active');
+                }
+            });
+
+             // Re-render icons in the newly displayed section
+             // Use try-catch as lucide might not be fully loaded instantly on fast navigation
+             try {
+                lucide.createIcons();
+             } catch (e) {
+                 console.warn("Lucide icons could not be rendered immediately:", e);
+                 // Optionally retry after a short delay
+                 // setTimeout(() => { try { lucide.createIcons(); } catch(err) {} }, 50);
+             }
+        }
+
+
+        // --- Property Evaluation Logic ---
+        function navigateEvaluation(direction) {
+            const nextStep = currentEvaluationStep + direction;
+
+            if (nextStep >= 1 && nextStep <= totalEvaluationSteps) {
+                // Hide current step
+                document.querySelector(`.evaluation-step[data-step="${currentEvaluationStep}"]`).style.display = 'none';
+                // Show next step
+                document.querySelector(`.evaluation-step[data-step="${nextStep}"]`).style.display = 'block';
+                currentEvaluationStep = nextStep;
+                updateEvaluationUI();
+            }
+             try { lucide.createIcons(); } catch(e){} // Re-render icons if needed
+        }
+
+        function updateEvaluationUI() {
+            // Update progress dots
+            evalProgressDots.forEach(dot => {
+                const step = parseInt(dot.getAttribute('data-step'));
+                dot.classList.remove('active', 'completed');
+                if (step < currentEvaluationStep) {
+                    dot.classList.add('completed');
+                } else if (step === currentEvaluationStep) {
+                    dot.classList.add('active');
+                }
+            });
+
+            // Update button states
+            evalPrevBtn.disabled = currentEvaluationStep === 1;
+            evalNextBtn.style.display = currentEvaluationStep === totalEvaluationSteps -1 ? 'none' : 'flex'; // Hide Next on last question step
+            evalFinishBtn.style.display = currentEvaluationStep === totalEvaluationSteps -1 ? 'flex' : 'none'; // Show Finish on last question step
+
+            // Hide navigation on the result step
+            evalNavigation.style.display = currentEvaluationStep === totalEvaluationSteps ? 'none' : 'flex';
+        }
+
+         function finishEvaluation() {
+             // Simulate calculation
+             const sizeInput = document.getElementById('prop-size');
+             const conditionSelect = document.getElementById('prop-condition');
+             const size = parseFloat(sizeInput.value) || 75; // Default size if input is invalid
+             const condition = conditionSelect.value;
+             let baseValue = size * 3000; // Simple base calculation
+
+             // Adjust based on condition
+             if (condition.includes('Excellent')) baseValue *= 1.2;
+             else if (condition.includes('Good')) baseValue *= 1.05;
+             else if (condition.includes('Fair')) baseValue *= 0.85;
+             else if (condition.includes('Poor')) baseValue *= 0.7;
+             // 'Average' has no multiplier
+
+             const estimatedValue = Math.round(baseValue / 1000) * 1000; // Round to nearest thousand
+             platformState.estimatedValue = estimatedValue;
+             platformState.evaluationComplete = true;
+
+             // Display result
+             evalResultValue.textContent = `€ ${estimatedValue.toLocaleString('de-DE')}`; // Format as Euro
+             dashboardEvalResult.textContent = `€ ${estimatedValue.toLocaleString('de-DE')}*`;
+
+             // Move to the result step
+             navigateEvaluation(1); // Go to step 5 (Result Step)
+             updateDashboard(); // Update dashboard elements if needed
+         }
+
+        // --- Property Preparation Logic ---
+        function generateAdText() {
+            const highlights = adHighlightsInput.value;
+            if (!highlights) {
+                adGeneratedTextInput.placeholder = "Please enter some highlights first.";
+                return;
+            }
+
+            aiLoadingIndicator.style.display = 'flex';
+            adGeneratedTextInput.value = ""; // Clear previous
+            adGeneratedTextInput.placeholder = "Generating description...";
+            try { lucide.createIcons(); } catch(e){} // Ensure loader icon renders
+
+
+            // Simulate AI generation delay
+            setTimeout(() => {
+                // Basic simulated generation based on keywords
+                let generated = `Discover this wonderful property! Key features include: ${highlights}. `;
+                if (highlights.toLowerCase().includes("sunny")) {
+                    generated += "Enjoy bright, sunlit rooms throughout the day. ";
+                }
+                 if (highlights.toLowerCase().includes("renovated")) {
+                    generated += "The property benefits from recent renovations, offering modern comforts. ";
+                }
+                 if (highlights.toLowerCase().includes("quiet")) {
+                    generated += "Located on a peaceful street, ensuring a tranquil living environment. ";
+                }
+                 if (highlights.toLowerCase().includes("transport")) {
+                    generated += "Excellent transport links nearby make commuting a breeze. ";
+                }
+                generated += "This is a fantastic opportunity not to be missed. Contact us today for a viewing!"
+
+                adGeneratedTextInput.value = generated;
+                platformState.adText = generated;
+                listingAdTextPreview.textContent = generated; // Update listing preview
+                aiLoadingIndicator.style.display = 'none';
+                adGeneratedTextInput.placeholder = "AI-generated text will appear here...";
+                 try { lucide.createIcons(); } catch(e){} // Refresh icons if any were added/changed
+            }, 1500); // 1.5 second delay
+        }
+
+        function handlePhotoUpload(event) {
+            const files = event.target.files;
+            if (!files || files.length === 0) return;
+
+            // Clear previous previews
+            photoGalleryPreview.innerHTML = '';
+            listingPhotoPreview.innerHTML = '<p class="text-xs text-gray-500 italic">Updating previews...</p>'; // Placeholder while loading
+            platformState.photos = [];
+            let listingPreviewCount = 0;
+            const maxListingPreview = 3;
+
+            Array.from(files).forEach((file, index) => {
+                 if (!file.type.startsWith('image/')) return; // Only process images
+
+                 const reader = new FileReader();
+                 reader.onload = (e) => {
+                     const imageUrl = e.target.result;
+                     platformState.photos.push({ name: file.name, url: imageUrl }); // Store basic info
+
+                     // Add preview to gallery in Prep section
+                     const galleryImgContainer = document.createElement('div');
+                     galleryImgContainer.className = 'relative group';
+                     galleryImgContainer.innerHTML = `
+                        <img src="${imageUrl}" alt="Preview ${index + 1}" class="h-20 w-full object-cover rounded border border-gray-200 group-hover:opacity-75">
+                        <button onclick="removePhoto(${index})" class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity text-xs" title="Remove">
+                            <i data-lucide="x" class="h-3 w-3"></i>
+                        </button>
+                     `;
+                     photoGalleryPreview.appendChild(galleryImgContainer);
+
+
+                     // Update listing section preview (limit shown)
+                     if (listingPreviewCount < maxListingPreview) {
+                         // Clear the "Updating..." placeholder on first image
+                         if (listingPreviewCount === 0) listingPhotoPreview.innerHTML = '';
+
+                         const listingImg = document.createElement('img');
+                         listingImg.src = imageUrl;
+                         listingImg.alt = `Photo ${index + 1}`;
+                         listingImg.className = 'h-16 w-20 object-cover rounded';
+                         listingPhotoPreview.appendChild(listingImg);
+                         listingPreviewCount++;
+                     } else if (listingPreviewCount === maxListingPreview) {
+                         // Add the "+ more" indicator only once
+                         const moreDiv = document.createElement('div');
+                         moreDiv.id = 'listing-more-photos-indicator'; // Give it an ID for easy update
+                         moreDiv.className = 'h-16 w-20 bg-gray-100 rounded flex items-center justify-center text-gray-500 text-xs';
+                         moreDiv.textContent = `+${platformState.photos.length - maxListingPreview} more`;
+                         listingPhotoPreview.appendChild(moreDiv);
+                         listingPreviewCount++; // Increment so this block doesn't run again
+                     } else {
+                          // Update the "+ more" indicator count if more photos are added
+                         const moreDiv = document.getElementById('listing-more-photos-indicator');
+                         if (moreDiv) {
+                             moreDiv.textContent = `+${platformState.photos.length - maxListingPreview} more`;
+                         }
+                     }
+                     try { lucide.createIcons(); } catch(e){} // Render remove icon
+                 }
+                 reader.readAsDataURL(file);
+            });
+
+             // If, after processing, no valid images were found for listing preview
+             setTimeout(() => { // Use timeout to ensure reader.onload finishes
+                 if (listingPreviewCount === 0) {
+                     listingPhotoPreview.innerHTML = '<p class="text-xs text-gray-500">No photos uploaded yet.</p>';
+                 }
+             }, 100); // Short delay
+        }
+
+        // Simple function to simulate removing a photo (updates state and re-renders previews)
+        function removePhoto(indexToRemove) {
+            if (indexToRemove < 0 || indexToRemove >= platformState.photos.length) return;
+
+            platformState.photos.splice(indexToRemove, 1); // Remove photo from state
+
+            // Re-render previews based on the updated state
+            // Clear existing previews
+            photoGalleryPreview.innerHTML = '';
+            listingPhotoPreview.innerHTML = '';
+            let listingPreviewCount = 0;
+            const maxListingPreview = 3;
+
+
+            platformState.photos.forEach((photo, index) => {
+                 // Add preview to gallery in Prep section
+                 const galleryImgContainer = document.createElement('div');
+                 galleryImgContainer.className = 'relative group';
+                 galleryImgContainer.innerHTML = `
+                    <img src="${photo.url}" alt="Preview ${index + 1}" class="h-20 w-full object-cover rounded border border-gray-200 group-hover:opacity-75">
+                    <button onclick="removePhoto(${index})" class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity text-xs" title="Remove">
+                        <i data-lucide="x" class="h-3 w-3"></i>
+                    </button>
+                 `;
+                 photoGalleryPreview.appendChild(galleryImgContainer);
+
+                // Update listing section preview
+                 if (listingPreviewCount < maxListingPreview) {
+                     const listingImg = document.createElement('img');
+                     listingImg.src = photo.url;
+                     listingImg.alt = `Photo ${index + 1}`;
+                     listingImg.className = 'h-16 w-20 object-cover rounded';
+                     listingPhotoPreview.appendChild(listingImg);
+                     listingPreviewCount++;
+                 } else if (listingPreviewCount === maxListingPreview) {
+                     const moreDiv = document.createElement('div');
+                     moreDiv.id = 'listing-more-photos-indicator';
+                     moreDiv.className = 'h-16 w-20 bg-gray-100 rounded flex items-center justify-center text-gray-500 text-xs';
+                     moreDiv.textContent = `+${platformState.photos.length - maxListingPreview} more`;
+                     listingPhotoPreview.appendChild(moreDiv);
+                     listingPreviewCount++;
+                 } else {
+                     const moreDiv = document.getElementById('listing-more-photos-indicator');
+                     if (moreDiv) {
+                         moreDiv.textContent = `+${platformState.photos.length - maxListingPreview} more`;
+                     }
+                 }
+            });
+
+            // Handle case where all photos are removed or fewer than maxListingPreview remain
+            if (platformState.photos.length === 0) {
+                listingPhotoPreview.innerHTML = '<p class="text-xs text-gray-500">No photos uploaded yet.</p>';
+            } else if (platformState.photos.length <= maxListingPreview) {
+                // Ensure the "+ more" div is removed if count drops below threshold
+                const moreDiv = document.getElementById('listing-more-photos-indicator');
+                if (moreDiv) moreDiv.remove();
+            }
+
+
+            try { lucide.createIcons(); } catch(e){} // Re-render icons
+        }
+
+
+        // --- Listing & Publishing Logic ---
+        function publishListing() {
+             // Basic check: Ensure Ad text and photos exist (optional but good practice)
+             if (!platformState.adText || platformState.photos.length === 0) {
+                 alert("Please generate ad text and upload photos before publishing.");
+                 return;
+             }
+
+             publishButton.disabled = true;
+             publishButton.innerHTML = `<i data-lucide="loader" class="mr-2 h-5 w-5 animate-spin"></i> Publishing...`;
+             try { lucide.createIcons(); } catch(e){} // Render the loader icon
+
+             publishingStatusDiv.style.display = 'block';
+             publishCompleteMessage.style.display = 'none'; // Hide completion message initially
+
+             // Reset statuses and progress bars
+             const portals = ['city23', 'kv', 'olx'];
+             portals.forEach(portal => {
+                 const statusEl = document.getElementById(`status-${portal}`);
+                 const progressEl = document.getElementById(`progress-${portal}`);
+                 if(statusEl) statusEl.innerHTML = `<i data-lucide="circle-dashed" class="mr-1 h-4 w-4"></i> Pending`;
+                 if(progressEl) {
+                    progressEl.style.width = '0%';
+                    progressEl.className = 'bg-gray-400 h-1.5 rounded-full'; // Reset color
+                 }
+                 platformState.publishStatus[portal] = 'pending';
+             });
+             try { lucide.createIcons(); } catch(e){} // Render icons
+
+             // Simulate publishing process with delays
+             let delay = 0;
+             let completedCount = 0;
+
+             portals.forEach((portal) => {
+                 setTimeout(() => {
+                     simulatePublishStep(portal, 1); // Start step 1
+                 }, delay);
+                 delay += 500; // Stagger start times
+             });
+
+             function simulatePublishStep(portal, step) {
+                 const statusEl = document.getElementById(`status-${portal}`);
+                 const progressEl = document.getElementById(`progress-${portal}`);
+                 // Ensure elements exist before trying to modify them
+                 if (!statusEl || !progressEl) {
+                     console.error(`Elements for portal ${portal} not found.`);
+                     completedCount++; // Increment count to avoid infinite loop if elements are missing
+                      if (completedCount === portals.length) checkCompletion();
+                     return;
+                 }
+
+
+                 let progress = 0;
+                 let statusText = '';
+                 let statusIcon = 'loader';
+                 let statusColorClass = 'text-yellow-600';
+                 let progressColorClass = 'bg-yellow-500';
+
+                 switch (step) {
+                     case 1:
+                         progress = 30;
+                         statusText = 'Connecting...';
+                         break;
+                     case 2:
+                         progress = 70;
+                         statusText = 'Uploading Data...';
+                         break;
+                     case 3: // Success case
+                         progress = 100;
+                         statusText = 'Published';
+                         statusIcon = 'check-circle';
+                         statusColorClass = 'text-green-600';
+                         progressColorClass = 'bg-green-500';
+                         platformState.publishStatus[portal] = 'published';
+                         completedCount++;
+                         break;
+                     case 4: // Error case (simulated)
+                         progress = 100; // Show full bar but red
+                         statusText = 'Error';
+                         statusIcon = 'x-circle';
+                         statusColorClass = 'text-red-600';
+                         progressColorClass = 'bg-red-500';
+                         platformState.publishStatus[portal] = 'error';
+                         completedCount++;
+                         break;
+                 }
+
+                 statusEl.innerHTML = `<i data-lucide="${statusIcon}" class="mr-1 h-4 w-4 ${statusIcon === 'loader' ? 'animate-spin' : ''}"></i> ${statusText}`;
+                 statusEl.className = `text-sm font-medium flex items-center ${statusColorClass}`;
+                 progressEl.style.width = `${progress}%`;
+                 progressEl.className = `${progressColorClass} h-1.5 rounded-full`;
+                 try { lucide.createIcons(); } catch(e){}
+
+                 // Decide next step or finish
+                 if (step < 3) { // If not yet success (step 3) or error (step 4)
+                     setTimeout(() => {
+                         // Simulate potential error only on the last step for OLX
+                         if (portal === 'olx' && step === 2 && Math.random() > 0.8) {
+                             simulatePublishStep(portal, 4); // Trigger error step
+                         } else {
+                             simulatePublishStep(portal, step + 1); // Proceed to next step
+                         }
+                     }, 800 + Math.random() * 500); // Random delay
+                 } else {
+                     // If step 3 (success) or step 4 (error) is reached, check if all are done
+                     checkCompletion();
+                 }
+             }
+
+              function checkCompletion() {
+                 if (completedCount === portals.length) {
+                     platformState.listingPublished = true;
+                     publishCompleteMessage.style.display = 'block';
+                     // Check if any portal had an error to adjust the final button state
+                     const hasError = Object.values(platformState.publishStatus).includes('error');
+                     if (hasError) {
+                         publishButton.innerHTML = `<i data-lucide="alert-triangle" class="mr-2 h-5 w-5"></i> Published with Errors`;
+                         publishButton.classList.remove('bg-green-600', 'hover:bg-green-700');
+                         publishButton.classList.add('bg-yellow-600', 'hover:bg-yellow-700');
+                     } else {
+                         publishButton.innerHTML = `<i data-lucide="check-circle" class="mr-2 h-5 w-5"></i> Published Successfully`;
+                         // Keep green color
+                         publishButton.classList.remove('bg-yellow-600', 'hover:bg-yellow-700');
+                         publishButton.classList.add('bg-green-600', 'hover:bg-green-700');
+                     }
+                     publishButton.disabled = false; // Re-enable button
+                     try { lucide.createIcons(); } catch(e){}
+                     updateDashboard();
+                 }
+             }
+        }
+
+        // --- CRM Logic ---
+        function renderCrmList() {
+            crmContactList.innerHTML = ''; // Clear existing list
+            if (platformState.crmContacts.length === 0) {
+                crmContactList.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-gray-500">No contacts added yet.</td></tr>';
+                return;
+            }
+
+            platformState.crmContacts.forEach(contact => {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50';
+                // Sanitize contact details slightly for display
+                const name = contact.name ? String(contact.name).replace(/</g, "&lt;").replace(/>/g, "&gt;") : 'N/A';
+                const email = contact.email ? String(contact.email).replace(/</g, "&lt;").replace(/>/g, "&gt;") : '';
+                const phone = contact.phone ? String(contact.phone).replace(/</g, "&lt;").replace(/>/g, "&gt;") : '';
+                const dateAdded = contact.dateAdded || 'N/A';
+                const interest = contact.interest || 'Unknown';
+                const status = contact.status || 'N/A';
+
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${name}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${email} ${email && phone ? '|' : ''} ${phone}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${dateAdded}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getInterestBadgeClass(interest)}">${interest}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusBadgeClass(status)}">${status}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                        <button class="text-indigo-600 hover:text-indigo-900" title="Notes"><i data-lucide="sticky-note" class="h-4 w-4"></i></button>
+                        <button class="text-yellow-600 hover:text-yellow-900" title="Reminder"><i data-lucide="clock" class="h-4 w-4"></i></button>
+                        <button class="text-red-600 hover:text-red-900" onclick="deleteContact(${contact.id})" title="Delete"><i data-lucide="trash-2" class="h-4 w-4"></i></button>
+                    </td>
+                `;
+                crmContactList.appendChild(row);
+            });
+            try { lucide.createIcons(); } catch(e){} // Render icons in the table
+        }
+
+        function getInterestBadgeClass(interest) {
+            switch (interest?.toLowerCase()) {
+                case 'high': return 'bg-green-100 text-green-800';
+                case 'medium': return 'bg-yellow-100 text-yellow-800';
+                case 'low': return 'bg-red-100 text-red-800';
+                default: return 'bg-gray-100 text-gray-800';
+            }
+        }
+
+        function getStatusBadgeClass(status) {
+             switch (status?.toLowerCase()) {
+                case 'viewing scheduled': return 'bg-blue-100 text-blue-800';
+                case 'follow-up needed': return 'bg-yellow-100 text-yellow-800';
+                case 'initial inquiry': return 'bg-gray-100 text-gray-800';
+                case 'offer made': return 'bg-purple-100 text-purple-800';
+                 case 'contacted': return 'bg-teal-100 text-teal-800';
+                 case 'not interested': return 'bg-red-100 text-red-800';
+                default: return 'bg-gray-100 text-gray-800';
+            }
+        }
+
+        function showAddContactModal() {
+            addContactForm.reset(); // Clear form
+            addContactModal.style.display = 'flex';
+        }
+
+        function hideAddContactModal() {
+            addContactModal.style.display = 'none';
+        }
+
+        function handleAddContact(event) {
+            event.preventDefault(); // Prevent default form submission
+            const nameInput = document.getElementById('contact-name');
+            const emailInput = document.getElementById('contact-email');
+            const phoneInput = document.getElementById('contact-phone');
+            const interestSelect = document.getElementById('contact-interest');
+            const statusSelect = document.getElementById('contact-status');
+
+            // Basic validation: ensure name is provided
+            if (!nameInput.value.trim()) {
+                alert("Please enter a contact name.");
+                nameInput.focus();
+                return;
+            }
+
+
+            const newContact = {
+                id: Date.now(), // Simple unique ID
+                name: nameInput.value.trim(),
+                email: emailInput.value.trim(),
+                phone: phoneInput.value.trim(),
+                dateAdded: new Date().toISOString().split('T')[0], // Today's date YYYY-MM-DD
+                interest: interestSelect.value,
+                status: statusSelect.value,
+                notes: '' // Initialize notes as empty
+            };
+            platformState.crmContacts.push(newContact);
+            renderCrmList();
+            hideAddContactModal();
+            updateDashboard(); // Update dashboard CRM count if needed
+        }
+
+         function deleteContact(id) {
+             // Find the contact name for the confirmation message
+             const contactToDelete = platformState.crmContacts.find(contact => contact.id === id);
+             const contactName = contactToDelete ? contactToDelete.name : 'this contact';
+
+            if (confirm(`Are you sure you want to delete ${contactName}?`)) {
+                 platformState.crmContacts = platformState.crmContacts.filter(contact => contact.id !== id);
+                 renderCrmList();
+                 updateDashboard();
+            }
+        }
+
+
+        // --- Knowledge Base Logic ---
+        kbLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const articleId = link.getAttribute('href'); // e.g., #kb-article-staging
+                if (articleId) {
+                    displayKbArticle(articleId);
+                }
+            });
+        });
+
+        function displayKbArticle(articleId) {
+            // Ensure articleId starts with #
+            const cleanArticleId = articleId.startsWith('#') ? articleId : `#${articleId}`;
+            const articleData = getKbArticleContent(cleanArticleId); // Fetch content based on ID
+
+            if (articleData) {
+                kbArticleTitle.textContent = articleData.title;
+                kbArticleContent.innerHTML = articleData.content; // Use innerHTML for formatted content
+                kbArticleDisplay.style.display = 'block';
+                // Scroll to the article display area smoothly
+                kbArticleDisplay.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                 try { lucide.createIcons(); } catch(e){} // Render any icons inside the article
+            } else {
+                 // Handle case where article content is not found
+                 kbArticleTitle.textContent = "Article Not Found";
+                 kbArticleContent.innerHTML = "<p>Sorry, the content for this topic could not be loaded.</p>";
+                 kbArticleDisplay.style.display = 'block';
+                 kbArticleDisplay.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function hideKbArticle() {
+            kbArticleDisplay.style.display = 'none';
+        }
+
+        function getKbArticleContent(articleId) {
+            // --- Simulated Knowledge Base Content ---
+            const articles = {
+                 "#kb-article-staging": {
+                    title: "Effective Home Staging Tips",
+                    content: `
+                        <p class="mb-4">Staging helps buyers visualize themselves living in the space. Focus on creating a clean, neutral, and inviting atmosphere.</p>
+                        <h4 class="font-semibold text-lg mb-2">Key Principles:</h4>
+                        <ul class="list-disc list-inside space-y-2 mb-4">
+                            <li><strong>Declutter:</strong> Remove personal items, excess furniture, and clutter from all surfaces and rooms. Less is more.</li>
+                            <li><strong>Depersonalize:</strong> Take down family photos and personal collections so buyers can imagine their own items there.</li>
+                            <li><strong>Clean Thoroughly:</strong> A spotless home is essential. Pay attention to kitchens, bathrooms, floors, and windows.</li>
+                            <li><strong>Define Spaces:</strong> Arrange furniture to clearly show the purpose of each room (e.g., dining area, home office).</li>
+                            <li><strong>Neutral Palette:</strong> Use neutral wall colors and decor. Add pops of color with accessories like pillows or throws.</li>
+                            <li><strong>Maximize Light:</strong> Open curtains and blinds. Ensure all light fixtures work and use bright bulbs.</li>
+                            <li><strong>Curb Appeal:</strong> Don't forget the exterior! Tidy the entrance, mow the lawn, and perhaps add some potted plants.</li>
+                        </ul>
+                        <p>Consider focusing staging efforts on key rooms: the living room, master bedroom, and kitchen.</p>
+                    `
+                },
+                 "#kb-article-declutter": {
+                    title: "Decluttering Guide for Sellers",
+                    content: "<p>Decluttering makes your home look larger and more appealing. Start early and tackle one room at a time.</p> <ul class='list-disc list-inside space-y-1'><li>Sort items into Keep, Donate, Sell, and Discard piles.</li><li>Clear off countertops and surfaces.</li><li>Organize closets and storage spaces (buyers will look!).</li><li>Remove oversized furniture that makes rooms feel small.</li><li>Store packed boxes neatly, preferably off-site.</li></ul>"
+                },
+                 "#kb-article-photo-guide": {
+                    title: "DIY Property Photography Guide",
+                    content: `
+                        <p class="mb-4">Good photos are crucial for attracting buyers online. You can take great photos yourself with some preparation.</p>
+                        <h4 class="font-semibold text-lg mb-2">Tips for Better Photos:</h4>
+                        <ul class="list-disc list-inside space-y-2 mb-4">
+                            <li><strong>Use Natural Light:</strong> Shoot during the day with blinds/curtains open. Avoid using flash if possible.</li>
+                            <li><strong>Clean & Declutter First:</strong> Ensure the space is spotless and free of clutter before taking photos.</li>
+                            <li><strong>Shoot Wide:</strong> Use the widest angle setting on your phone/camera (without distorting too much) to capture more of the room. Stand in corners.</li>
+                            <li><strong>Steady Shots:</strong> Keep the camera level. Use a tripod if possible, or brace yourself against a wall.</li>
+                            <li><strong>Highlight Key Features:</strong> Capture unique selling points like fireplaces, balconies, or nice views.</li>
+                            <li><strong>Exterior Shots:</strong> Take photos of the front exterior, backyard, and any outdoor spaces.</li>
+                            <li><strong>Resolution:</strong> Use the highest resolution setting on your device.</li>
+                        </ul>
+                        <p>Edit photos minimally – adjust brightness and contrast if needed, but keep them realistic.</p>
+                    `
+                },
+                 "#kb-article-notary-role": {
+                    title: "The Notary's Role Explained (Estonia)",
+                    content: "<p>As outlined in the Notary Info section, the notary is a neutral legal professional required for property sales in Estonia. They verify documents, confirm identities, draft the official deed, handle secure fund transfer (via deposit account), and register the ownership change. Their involvement ensures the transaction is legally valid and secure for both buyer and seller.</p>"
+                },
+                 "#kb-article-negotiation": {
+                    title: "Negotiation Strategies for Sellers",
+                    content: "<p>Be prepared for negotiation. Know your minimum acceptable price beforehand. Respond to offers promptly but don't feel rushed. Consider the buyer's conditions (e.g., financing, inspection) alongside the price. Be willing to compromise on minor points if needed. If you receive multiple offers, evaluate them carefully based on price, conditions, and buyer qualifications. Your real estate agent (if using one) or the platform resources can provide guidance.</p>"
+                 },
+                 "#kb-article-repairs": { title: "Prioritizing Minor Repairs", content: "<p>Focus on small fixes that have a big impact: fixing leaky faucets, replacing broken tiles, patching small holes in walls, ensuring all light switches work, and touching up paint. These show the property is well-maintained.</p>" },
+                 "#kb-article-cleaning": { title: "Pre-Sale Cleaning Checklist", content: "<p>Deep clean everything: floors, carpets, windows (inside and out), kitchen appliances, bathrooms (including grout), light fixtures, and baseboards. A sparkling clean home makes a huge difference.</p>" },
+                 "#kb-article-writing-ads": { title: "Writing Compelling Ad Descriptions", content: "<p>Highlight the best features (e.g., 'newly renovated kitchen', 'large sunny balcony', 'quiet location'). Use positive and descriptive language. Mention key details like size, number of rooms, and unique selling points. Keep it concise and easy to read. Proofread carefully!</p>" },
+                 "#kb-article-portals": { title: "Understanding Online Property Portals", content: "<p>Portals like City23.ee, KV.ee, etc., are the primary way buyers search for properties. Having your listing on multiple major portals maximizes visibility. Ensure your photos and description are optimized for online viewing.</p>" },
+                 "#kb-article-costs": { title: "Understanding Selling Costs", content: "<p>Factor in costs like notary fees, potential real estate agent commission (if applicable), potential costs for energy certificate, minor repair/staging costs, and moving expenses. Knowing these helps you calculate your net proceeds.</p>" },
+                 "#kb-article-agreement": { title: "Key Elements of a Purchase Agreement", content: "<p>The notarial deed typically includes: buyer/seller details, property description, purchase price, payment terms, handover date, conditions (e.g., financing), included items, and declarations regarding property condition.</p>" },
+                 "#kb-article-showings": { title: "Preparing for Property Viewings", content: "<p>Ensure the house is clean, tidy, and well-lit. Open windows for fresh air beforehand (weather permitting). Turn on lights. Remove pets if possible. Leave the property during the showing to allow buyers to look freely. Have property documents readily available if requested.</p>" },
+                 "#kb-article-offers": { title: "Handling Multiple Offers", content: "<p>Review each offer's price, conditions (financing, inspection), closing date, and buyer's pre-approval status (if applicable). You can accept one, reject all, or make counter-offers. Consider asking for 'best and final' offers by a specific deadline.</p>" },
+                 "#kb-article-handover": { title: "The Property Handover Process", content: "<p>Usually occurs on the closing date after funds are transferred. Use a handover protocol (akt) to document meter readings, condition, and transfer of keys. Both parties sign. This prevents disputes later.</p>" },
+                 "#kb-article-utilities": { title: "Managing Utilities Transfer", content: "<p>Contact utility providers (electricity, water, gas, internet) in advance to schedule final readings and close your accounts or transfer them. Provide the new owner's details if required for a smooth transition.</p>" },
+                 "#kb-article-moving": { title: "Moving Out Checklist", content: "<p>Book movers, pack systematically, label boxes, arrange mail forwarding, update address with important services, clean the property after moving out, and coordinate key handover.</p>" }
+            };
+            // Return the specific article content or null if not found
+            return articles[articleId] || null;
+        }
+
+
+        // --- Dashboard Update Logic ---
+        function updateDashboard() {
+            // This function updates the dashboard widgets based on the current platformState
+
+            // Update CRM count
+            try {
+                const newLeads = platformState.crmContacts.filter(c => c.status === 'Initial Inquiry').length;
+                const totalLeads = platformState.crmContacts.length;
+                const dashboardCrmCount = document.querySelector('#dashboard .bg-white:has(i[data-lucide="users"]) p:first-of-type');
+                if (dashboardCrmCount) {
+                    dashboardCrmCount.innerHTML = `${totalLeads} <span class="text-base font-normal text-gray-600">Total Leads (${newLeads} New)</span>`;
+                }
+                 // Update follow-up count (example)
+                 const followUpsDue = platformState.crmContacts.filter(c => c.status === 'Follow-up Needed').length;
+                 const dashboardFollowUp = document.querySelector('#dashboard .bg-white:has(i[data-lucide="users"]) p:nth-of-type(2)');
+                 if(dashboardFollowUp) {
+                     dashboardFollowUp.textContent = `${followUpsDue} Follow-up${followUpsDue !== 1 ? 's' : ''} due`;
+                 }
+
+            } catch (e) { console.error("Error updating dashboard CRM widget:", e); }
+
+            // Update evaluation result on dashboard
+             try {
+                if (platformState.evaluationComplete && platformState.estimatedValue !== null) {
+                    dashboardEvalResult.textContent = `€ ${platformState.estimatedValue.toLocaleString('de-DE')}*`;
+                } else {
+                     dashboardEvalResult.textContent = `€ ---,--*`; // Reset if not complete
+                }
+             } catch (e) { console.error("Error updating dashboard evaluation widget:", e); }
+
+
+            // Update Preparation Status Widget (Example)
+            try {
+                const prepStatusList = document.querySelector('#dashboard .bg-white:has(i[data-lucide="brush"]) ul');
+                if (prepStatusList) {
+                    let adTextStatus = '<li class="flex items-center text-gray-600"><i data-lucide="circle-dashed" class="mr-2 h-4 w-4 text-gray-400"></i> Ad Text: Not Started</li>';
+                    if (platformState.adText) {
+                         adTextStatus = '<li class="flex items-center text-gray-600"><i data-lucide="check" class="mr-2 h-4 w-4 text-green-500"></i> Ad Text: Draft Saved</li>';
+                    }
+
+                    let photoStatus = '<li class="flex items-center text-gray-600"><i data-lucide="circle-dashed" class="mr-2 h-4 w-4 text-gray-400"></i> Photos: Not Uploaded</li>';
+                    if (platformState.photos.length > 0) {
+                        photoStatus = `<li class="flex items-center text-gray-600"><i data-lucide="check" class="mr-2 h-4 w-4 text-green-500"></i> Photos: ${platformState.photos.length} Uploaded</li>`;
+                    }
+
+                    // Staging status would require tracking checkbox states in platformState.stagingChecklist
+                    let stagingStatus = '<li class="flex items-center text-gray-600"><i data-lucide="circle-dashed" class="mr-2 h-4 w-4 text-gray-400"></i> Staging: Not Started</li>';
+                    // Add logic here later if staging checklist state is tracked
+
+                    prepStatusList.innerHTML = `${adTextStatus}${photoStatus}${stagingStatus}`;
+                }
+            } catch (e) { console.error("Error updating dashboard preparation widget:", e); }
+
+             // Update Listing Status Widget
+            try {
+                const listingStatusWidget = document.querySelector('#dashboard .bg-white:has(i[data-lucide="send"])');
+                if (listingStatusWidget) {
+                    const statusTextP = listingStatusWidget.querySelector('p:first-of-type');
+                    const portalsDiv = listingStatusWidget.querySelector('div'); // The div containing portal spans
+                    const button = listingStatusWidget.querySelector('button');
+
+                    if (platformState.listingPublished) {
+                         const hasError = Object.values(platformState.publishStatus).includes('error');
+                         const publishedCount = Object.values(platformState.publishStatus).filter(s => s === 'published').length;
+                         const totalPortals = Object.keys(platformState.publishStatus).length;
+
+                         if (hasError) {
+                             statusTextP.innerHTML = `<i data-lucide="alert-triangle" class="mr-1 h-4 w-4 text-yellow-500 inline-block"></i> Published to ${publishedCount}/${totalPortals} portals with errors.`;
+                         } else {
+                              statusTextP.innerHTML = `<i data-lucide="check-circle" class="mr-1 h-4 w-4 text-green-500 inline-block"></i> Published successfully to ${totalPortals} portals.`;
+                         }
+                         // Update portal badges based on status
+                         portalsDiv.innerHTML = Object.entries(platformState.publishStatus).map(([portal, status]) => {
+                             let badgeClass = 'bg-gray-200';
+                             if (status === 'published') badgeClass = 'bg-green-200 text-green-800';
+                             if (status === 'error') badgeClass = 'bg-red-200 text-red-800';
+                             // Map portal keys to display names if needed
+                             const displayName = portal === 'city23' ? 'City23.ee' : portal === 'kv' ? 'KV.ee' : portal === 'olx' ? 'OLX.ua' : portal;
+                             return `<span class="inline-block ${badgeClass} rounded-full px-2 py-0.5 mr-1">${displayName}</span>`;
+                         }).join('');
+                         button.textContent = 'View Listing Status';
+
+                    } else {
+                         statusTextP.textContent = 'Publishing not yet initiated.';
+                         // Show default target portals
+                         portalsDiv.innerHTML = `
+                            <p>Target Portals:</p>
+                            <span class="inline-block bg-gray-200 rounded-full px-2 py-0.5 mr-1">City23.ee</span>
+                            <span class="inline-block bg-gray-200 rounded-full px-2 py-0.5 mr-1">KV.ee</span>
+                            <span class="inline-block bg-gray-200 rounded-full px-2 py-0.5">OLX.ua</span>`;
+                         button.textContent = 'Go to Listing';
+                    }
+                     button.onclick = () => navigateToSection('listing-publishing'); // Ensure button navigates correctly
+                     button.innerHTML += ' <i data-lucide="arrow-right" class="ml-1 h-4 w-4"></i>'; // Re-add arrow icon
+                }
+
+            } catch (e) { console.error("Error updating dashboard listing widget:", e); }
+
+
+             // Final icon render for the dashboard
+             try { lucide.createIcons(); } catch(e){}
+        }
+
+    </script>
+</body>
+</html>
