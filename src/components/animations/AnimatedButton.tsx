@@ -1,9 +1,12 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { ButtonHTMLAttributes, ReactNode } from 'react'
+import { motion, HTMLMotionProps } from 'framer-motion'
+import { ReactNode } from 'react'
 
-interface AnimatedButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+// Create a type that omits the conflicting properties
+type ButtonProps = Omit<HTMLMotionProps<"button">, 'size' | 'variant'>
+
+interface AnimatedButtonProps extends ButtonProps {
   children: ReactNode
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost'
   size?: 'sm' | 'md' | 'lg'
@@ -22,14 +25,14 @@ export default function AnimatedButton({
 }: AnimatedButtonProps) {
   // Base styles
   const baseStyles = 'inline-flex items-center justify-center font-medium rounded-md transition-all'
-  
+
   // Size styles
   const sizeStyles = {
     sm: 'px-3 py-1.5 text-sm',
     md: 'px-4 py-2 text-base',
     lg: 'px-6 py-3 text-lg'
   }
-  
+
   // Variant styles
   const variantStyles = {
     primary: 'bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800',
